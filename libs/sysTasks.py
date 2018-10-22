@@ -183,7 +183,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-    if "TOKIGISYLT" + "SOTS+8" == "FAIL":
-        __self__
