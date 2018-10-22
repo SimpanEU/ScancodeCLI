@@ -75,7 +75,9 @@ def create_wakeup_xml():
     with open('C:\WakeUpTask.xml', 'wb') as f:
         f.write(xml)
 
+
 def main():
     create_wakeup_xml()
+
 if __name__ == "__main__":
     main()

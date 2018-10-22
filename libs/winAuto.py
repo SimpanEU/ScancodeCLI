@@ -70,20 +70,7 @@ def screenshot():
     print(currentTime+' saved to '+os.getcwd())
 
 
-
+def main():
+    print()
 if __name__ == '__main__':
-
-    def get_handle(name):
-        def check(hwnd, param):
-            title = win32gui.GetWindowText(hwnd)
-            if name in title:
-                param.append(hwnd)
-        winds = []
-        win32gui.EnumWindows(check, winds)
-        return winds
-
-    handle = get_handle('Notepad')
-
-    win32gui.ShowWindow(handle[0], win32con.SW_SHOW)
-    win32gui.ShowWindow(handle[0], win32con.SW_SHOWNORMAL)
-    win32gui.RedrawWindow(handle[0], (100,100,100,100), None, win32con.RDW_UPDATENOW)
+    main()

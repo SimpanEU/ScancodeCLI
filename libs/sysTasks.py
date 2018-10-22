@@ -173,8 +173,15 @@ def schedule_wakeup_task(user, password):
     cmd = "schtasks.exe /CREATE /TN WakeUpTask /XML c:\WakeUpTask.xml /F /RU "+user+" /RP "+password
     subprocess.Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE).communicate()
 
+def hibernate():
+    os.system("shutdown -H")
+
+def reboot():
+    os.system("shutdown -r -t 0")
+
 def tpm_status():
     print(os.system("powershell get-tpm"))
+
 
 def main():
     #check_if_win_activated()

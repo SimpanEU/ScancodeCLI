@@ -70,8 +70,10 @@ def switch_size(argument):
         3: 3,
     }.get(argument, 1)
 
+
 def main():
     read_disk_size()
     write_new_file('1GB', 20)
+
 if __name__ == "__main__":
     main()
