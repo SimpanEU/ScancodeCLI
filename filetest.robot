@@ -1,10 +1,5 @@
 *** Settings ***
-Library     logReader
-Library     sysTasks
-Library     registryReader
-Library     encryptionSpeed
-Library     xmlBuilder
-Library     winAuto
+Resource    libs.robot
 
 *** Test Cases ***
 #Parse Log Information
@@ -37,5 +32,5 @@ Library     winAuto
 Windows Automation
     Open Tray
     Check FDE Status
-#    Collect Policies
+    Collect Policies
 #    Screenshot
