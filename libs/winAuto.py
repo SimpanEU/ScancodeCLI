@@ -53,7 +53,7 @@ def open_tray():
    # win32gui.UpdateWindow(handle[0])
 
 
-def collect_polices():
+def collect_policies():
     time.sleep(1)
 
 def screenshot():
