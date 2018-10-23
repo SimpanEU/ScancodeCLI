@@ -1,6 +1,8 @@
 # Python 3.+
 
 
+Run with 'robot filetest.robot'
+
 ### Externals Libs:
 
 - robotframework     https://pypi.org/project/robotframework/
