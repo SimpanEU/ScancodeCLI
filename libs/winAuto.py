@@ -11,15 +11,6 @@ def check_fde_status():
       app = Application().connect(path=cptrayUI)
       dlg = app.window(title='Check Point Endpoint Security')
 
-      #print(pywinauto.findwindows.find_element(title='Check Point Endpoint Security'))
-      #print(app.findwindows.find_elements())
-
-      if dlg.exists():
-          dlg.set_focus()
-          print("dlg found", dlg)
-      else:
-         print("No dlg found")
-
       dlg.wait('ready')
 
       dlg[u'Full Disk Encryption'].click_input()
@@ -40,17 +31,24 @@ def open_tray():
         win32gui.EnumWindows(check, winds)
         return winds
 
-    handle = get_handle('Check Point Endpoint Security')
+    def callback(childWnd, extra):
+        show(childWnd)
+        return True
+
+    def show(w):
+        win32gui.ShowWindow(w, win32con.SW_SHOW)
+        win32gui.ShowWindow(w, win32con.SW_RESTORE)
+        win32gui.RedrawWindow(w, None, None, win32con.RDW_UPDATENOW)
+        win32gui.UpdateWindow(w)
+        win32gui.SetActiveWindow(w)
 
 
-    win32gui.SendMessage(handle[0], 0xC248)
-    win32gui.SendMessage(handle[0], 0xC0A8)
+    hWnd = get_handle('Check Point Endpoint Security')
+    hWnd = int(hWnd[0])
 
-   # win32gui.ShowWindow(handle[0], win32con.SW_SHOW)
-   # win32gui.ShowWindow(handle[0], win32con.SW_SHOWNORMAL)
-   # win32gui.ShowWindow(handle[0], win32con.SW_RESTORE)
-   # win32gui.RedrawWindow(handle[0], None, None, win32con.RDW_UPDATENOW)
-   # win32gui.UpdateWindow(handle[0])
+    show(hWnd)
+
+    win32gui.EnumChildWindows(hWnd, callback, 0)
 
 
 def collect_policies():

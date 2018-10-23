@@ -32,5 +32,5 @@ Resource    libs.robot
 Windows Automation
     Open Tray
     Check FDE Status
-    Collect Policies
+#    Collect Policies
 #    Screenshot
