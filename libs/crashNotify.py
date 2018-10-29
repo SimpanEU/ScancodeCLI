@@ -36,7 +36,7 @@ def background_scanner():
         dlog = list(open(os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\dlog1.txt"))
 
         if 'CrashDumps' in os.listdir(os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\"):
-            dumps = os.listdir(os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\CrashDumps")
+            dumps = os.listdir(os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\CrashDumps\\")
             for index, item in enumerate(dumps):
                 if item not in dmp:
                     currTime = str(datetime.datetime.now())
@@ -52,21 +52,20 @@ def background_scanner():
             if keyword in line:
                 crashTime = re.split(r'\t', line)
                 crashTime = time.mktime(time.strptime(crashTime[0][:15], "%Y%m%d %H%M%S"))
-                if (lastLogTime - crashTime) < 20:
+                if (lastLogTime - crashTime) < 30:
                     for a in range(index, index + 5):
                         if dlog[a] not in dlogCrash:
                             dlogCrash.append(dlog[a])
         if killme:
             break
 
-
-
-        time.sleep(5)
+        time.sleep(1)
 
 def start_background_scan():
     b = threading.Thread(name='background_scanner', target=background_scanner)
     b.start()
     print('Starting background scan...')
+    dmp.clear()
 
 def stop_background_scan():
     global killme
@@ -79,14 +78,21 @@ def stop_background_scan():
     for line in dlogCrash:
         if '.dmp' in line:
             print('Following entries was found in dlog1.txt during testscenario:\n', line)
-    print('Dumps found:\n', dmp)
 
-    if '.dmp' in dmp:
-        assert False, "CrashDumps found during test suite"
+    print('Dumps found:\n')
+    for item in dmp:
+        if '.dmp' in item:
+            print(item)
+
+    for item in dmp:
+        if '.dmp' in item:
+            dmp.clear()
+            assert False, "CrashDumps found during test suite"
 
 
 def main():
-    create_dump_test()
+    #create_dump_test()
+    print(os.listdir(os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\CrashDumps\\"))
     # start_background_scan()
     # time.sleep(10)
     # stop_background_scan()

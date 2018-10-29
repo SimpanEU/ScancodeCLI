@@ -179,10 +179,6 @@ def hibernate():
 def reboot():
     os.system("shutdown -r -t 0")
 
-def tpm_status():
-    print(os.system("powershell get-tpm"))
-
-
 def main():
     #check_if_win_activated()
     #start_notepad()
