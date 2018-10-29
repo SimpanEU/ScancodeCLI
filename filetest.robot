@@ -1,6 +1,5 @@
 *** Settings ***
 Resource    libs.robot
-
 Suite Setup  Start Background Scan
 Suite Teardown    Stop Background Scan
 
@@ -11,7 +10,6 @@ Parse Log Information
     Read FDE DLog crashes
     Preboot Bypass Logon  true
     SSO Chain Logon  false
-#
 System Information
     Start CPInfo
     Change OS user password  User  pass123
