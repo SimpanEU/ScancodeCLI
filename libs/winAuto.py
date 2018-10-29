@@ -63,6 +63,7 @@ def screenshot():
 
     os.chdir(imgdir)
     currentTime = str(datetime.datetime.now().strftime('%Y%m%d%H%M%S')+'.png')
+
     ImageGrab.grab().save(currentTime)
 
     print(currentTime+' saved to '+os.getcwd())

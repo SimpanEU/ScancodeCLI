@@ -5,3 +5,4 @@ Library     registryReader
 Library     encryptionSpeed
 Library     xmlBuilder
 Library     winAuto
+Library     crashNotify

@@ -28,6 +28,39 @@ def read_fde_dlog(keyword, minutes):
     for log in phraseLog:
         print(log, end="")
 
+def read_fde_dlog_crashes(minutes=False):
+
+    if isinstance(minutes, str):
+        minutes = int(minutes) * 60
+    elif isinstance(minutes, int) and minutes > 0:
+        minutes = minutes * 60
+    else:
+        minutes = None
+
+    lastLogTime = None
+    keyword = "An unexpected problem has occurred"
+
+    for line in reversed(list(open(os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\dlog1.txt"))):
+        lastLogTime = re.split(r'\t', line)
+        lastLogTime = time.mktime(time.strptime(lastLogTime[0][:15], "%Y%m%d %H%M%S"))
+        break
+
+    dlog = list(open(os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\dlog1.txt"))
+
+    for index, line in enumerate(dlog):
+        if keyword in line:
+            crashTime = re.split(r'\t', line)
+            crashTime = time.mktime(time.strptime(crashTime[0][:15], "%Y%m%d %H%M%S"))
+
+            if minutes is not None:
+                if (lastLogTime - crashTime) < minutes:
+                    for a in range(index, index + 5):
+                        print(dlog[a], end="")
+            else:
+                for a in range(index, index + 5):
+                    print(dlog[a], end="")
+
+
 def sso_chain_logon(arg1):
     ssoTime = None
     onecheckTime = None
@@ -117,6 +150,8 @@ def preboot_bypass_logon(arg1):
         assert False, 'Invalid input(true/false)'
 
 def main():
-    read_fde_dlog('FDE_srv.exe', 10)
+    #read_fde_dlog('FDE_srv.exe', 10)
+    read_fde_dlog_crashes()
+
 if __name__ == "__main__":
     main()
