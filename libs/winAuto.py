@@ -5,28 +5,32 @@ import time
 import datetime
 import win32gui
 import win32con
+import warnings
+
 
 def check_fde_status():
-      cptrayUI = os.environ["ProgramFiles(x86)"] + "\\CheckPoint\\Endpoint Security\\UIFramework\\bin\\cptrayUI.exe"
-      app = Application().connect(path=cptrayUI)
-      dlg = app.window(title='Check Point Endpoint Security')
+    warnings.simplefilter('ignore', category=UserWarning)
 
-      dlg.wait('ready')
+    cptrayUI = os.environ["ProgramFiles(x86)"] + "\\CheckPoint\\Endpoint Security\\UIFramework\\bin\\cptrayUI.exe"
+    app = Application().connect(path=cptrayUI)
+    dlg = app.window(title='Check Point Endpoint Security')
 
-      dlg[u'Full Disk Encryption'].click_input()
+    dlg.wait('ready')
+    dlg[u'Full Disk Encryption'].click_input()
 
-      screenshot()
-      dlg.minimize()
+    screenshot()
+    dlg.minimize()
 
-      app.kill()
+    app.kill()
+
 
 def open_tray():
-
     def get_handle(name):
         def check(hwnd, param):
             title = win32gui.GetWindowText(hwnd)
             if name in title:
                 param.append(hwnd)
+
         winds = []
         win32gui.EnumWindows(check, winds)
         return winds
@@ -42,7 +46,6 @@ def open_tray():
         win32gui.UpdateWindow(w)
         win32gui.SetActiveWindow(w)
 
-
     hWnd = get_handle('Check Point Endpoint Security')
     hWnd = int(hWnd[0])
 
@@ -54,22 +57,25 @@ def open_tray():
 def collect_policies():
     time.sleep(1)
 
+
 def screenshot():
     time.sleep(0.5)
-    imgdir = os.environ["HOMEDRIVE"]+'\\test_screenshots'
+    imgdir = os.environ["HOMEDRIVE"] + '\\test_screenshots'
 
     if not os.path.exists(imgdir):
         os.makedirs(imgdir)
 
     os.chdir(imgdir)
-    currentTime = str(datetime.datetime.now().strftime('%Y%m%d%H%M%S')+'.png')
+    currentTime = str(datetime.datetime.now().strftime('%Y%m%d%H%M%S') + '.png')
 
     ImageGrab.grab().save(currentTime)
 
-    print(currentTime+' saved to '+os.getcwd())
+    print(currentTime + ' saved to ' + os.getcwd())
 
 
 def main():
     print()
+
+
 if __name__ == '__main__':
     main()

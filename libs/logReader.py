@@ -2,6 +2,7 @@ import os
 import re
 import time
 
+
 def read_fde_dlog(keyword, minutes):
     lastLogTime = None
     phraseLog = []
@@ -28,8 +29,8 @@ def read_fde_dlog(keyword, minutes):
     for log in phraseLog:
         print(log, end="")
 
-def read_fde_dlog_crashes(minutes=False):
 
+def read_fde_dlog_crashes(minutes=False):
     if isinstance(minutes, str):
         minutes = int(minutes) * 60
     elif isinstance(minutes, int) and minutes > 0:
@@ -40,12 +41,14 @@ def read_fde_dlog_crashes(minutes=False):
     lastLogTime = None
     keyword = "An unexpected problem has occurred"
 
-    for line in reversed(list(open(os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\dlog1.txt"))):
+    for line in reversed(list(
+            open(os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\dlog1.txt"))):
         lastLogTime = re.split(r'\t', line)
         lastLogTime = time.mktime(time.strptime(lastLogTime[0][:15], "%Y%m%d %H%M%S"))
         break
 
-    dlog = list(open(os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\dlog1.txt"))
+    dlog = list(
+        open(os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\dlog1.txt"))
 
     for index, line in enumerate(dlog):
         if keyword in line:
@@ -73,7 +76,8 @@ def sso_chain_logon(arg1):
         elif "FALSE" in arg1 or "False" in arg1 or "false" in arg1:
             arg1 = False
 
-    for line in reversed(list(open(os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\dlog1.txt"))):
+    for line in reversed(list(
+            open(os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\dlog1.txt"))):
         ssoLog = 'SSO data initialized SUCCESSFULLY.'
         onecheckLog = 'OneCheck repository unlocked successfully.'
 
@@ -93,15 +97,15 @@ def sso_chain_logon(arg1):
 
     if arg1 is True:
         if ssoFound == True and onecheckFound == True:
-            assert (onecheckEpoch-ssoEpoch) < 2 and (onecheckEpoch-ssoEpoch) >= 0, 'No SSO chain for last login.'
+            assert (onecheckEpoch - ssoEpoch) < 2 and (onecheckEpoch - ssoEpoch) >= 0, 'No SSO chain for last login.'
     elif arg1 is False:
         if ssoFound == True and onecheckFound == True:
-            assert (onecheckEpoch-ssoEpoch) > 2 or (onecheckEpoch-ssoEpoch) < 0, 'SSO chain for last login.'
+            assert (onecheckEpoch - ssoEpoch) > 2 or (onecheckEpoch - ssoEpoch) < 0, 'SSO chain for last login.'
     else:
         assert False, 'Invalid input(true/false)'
 
-def preboot_bypass_logon(arg1):
 
+def preboot_bypass_logon(arg1):
     wilLog = False
     systemLog = None
 
@@ -117,7 +121,8 @@ def preboot_bypass_logon(arg1):
         elif "FALSE" in arg1 or "False" in arg1 or "false" in arg1:
             arg1 = False
 
-    for line in reversed(list(open(os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Logs\\epslog.43.1.log"))):
+    for line in reversed(
+            list(open(os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Logs\\epslog.43.1.log"))):
 
         wilLogLine = 'fde_account=(Windows Integrated Logon)'
         systemLogLine = 'System event PC was started.'
@@ -140,18 +145,19 @@ def preboot_bypass_logon(arg1):
             print(wilLog)
             assert False
         else:
-            assert (wilEpoch-systemEpoch) <2, 'No preboot bypass entry found for last login.'
+            assert (wilEpoch - systemEpoch) < 2, 'No preboot bypass entry found for last login.'
     elif arg1 is False:
         if wilLog is 'No entries for WIL found.':
             print(wilLog)
         else:
-            assert (wilEpoch-systemEpoch) >2
+            assert (wilEpoch - systemEpoch) > 2
     else:
         assert False, 'Invalid input(true/false)'
 
+
 def main():
-    #read_fde_dlog('FDE_srv.exe', 10)
     read_fde_dlog_crashes()
+
 
 if __name__ == "__main__":
     main()
