@@ -114,7 +114,7 @@ def stop_background_scan():
 def main():
     start_background_scan() # test_name variable can only be set running via robotframework.
     create_crashdump()
-    time.sleep(5)
+    time.sleep(10)
     stop_background_scan()
 
 
