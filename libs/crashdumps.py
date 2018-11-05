@@ -5,8 +5,6 @@ import datetime
 import re
 from robot.libraries.BuiltIn import BuiltIn
 
-dmplog = os.environ["SYSTEMDRIVE"] + "\\FDE_robot_dmplog.txt"
-
 
 def create_crashdump():
     fdedir = os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\"
@@ -23,52 +21,47 @@ def create_crashdump():
 
 
 def background_scanner():
+    global dmplog
     global killme
     global dmp
     global dlogCrash
 
-    if not 'CrashDumps' in os.listdir(
-            os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\"):
-        os.mkdir(os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\CrashDumps")
-        if not 'archive' in os.listdir(
-                os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\CrashDumps\\"):
-            os.mkdir(os.environ[
-                         "ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\CrashDumps\\archive\\")
-
-    archive = os.environ[
-                  "ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\CrashDumps\\archive\\"
-    crashdumps = os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\CrashDumps\\"
-
+    dmplog = os.environ["SYSTEMDRIVE"] + "\\FDE_robot_dmplog.txt"
     killme = False
-    dmp = []
     dlogCrash = []
+    dmp = []
     dmp.clear()
+
+    pathFde = os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\"
+    pathCrash = os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\CrashDumps\\"
+    pathArch = os.environ[
+                   "ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\CrashDumps\\archive\\"
+
+    if not 'CrashDumps' in os.listdir(pathFde):
+        os.mkdir(pathCrash)
+    if not 'archive' in os.listdir(pathCrash):
+        os.mkdir(pathArch)
+
+    for item in os.listdir(pathCrash):
+        if '.dmp' in item:
+            os.rename(pathCrash + item, pathArch + item)
 
     while True:
         lastLogTime = None
         keyword = "An unexpected problem has occurred"
-        dlog = list(
-            open(os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\dlog1.txt"))
+        dlog = list(open(pathFde + 'dlog1.txt'))
 
-        if 'CrashDumps' in os.listdir(
-                os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\"):
-            dumps = os.listdir(
-                os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\CrashDumps\\")
+        for item in os.listdir(pathCrash):
+            if item not in dmp:
+                currTime = str(datetime.datetime.now())
+                # test_name = BuiltIn().get_variable_value("${TEST_NAME}")
+                # open(dmplog, "a").write(str(currTime[:19] + '     Found ' + item + '      During ' + test_name + '\n'))
 
-            for index, item in enumerate(dumps):
-                if item not in dmp:
-                    currTime = str(datetime.datetime.now())
-                    # test_name = BuiltIn().get_variable_value("${TEST_NAME}")
-                    # open(dmplog, "a").write(
-                    #     str(currTime[:19] + '     Found ' + item + '      During ' + test_name + '\n'))
+                open(dmplog, "a").write(str(currTime[:19] + '     Found ' + item + '      During ' + '\n'))
 
-                    open(dmplog, "a").write(
-                        str(currTime[:19] + '     Found ' + item + '      During ' + '\n'))
-                    dmp.append(item)
-                    print(item, 'before IF')
-                    if not 'archive' in item:
-                        print("if ON")
-                        os.rename(crashdumps + item, archive + item)
+                dmp.append(item)
+                if '.dmp' in item:
+                    os.rename(pathCrash + item, pathArch + item)
 
         for line in reversed(dlog):
             lastLogTime = re.split(r'\t', line)
@@ -79,22 +72,25 @@ def background_scanner():
             if keyword in line:
                 crashTime = re.split(r'\t', line)
                 crashTime = time.mktime(time.strptime(crashTime[0][:15], "%Y%m%d %H%M%S"))
-                if (lastLogTime - crashTime) < 30:
+
+                # Read last 10 seconds from dlog1.txt, appending any line containing
+                # logging about crashdumps for later printout.
+                if (lastLogTime - crashTime) < 10:
                     for a in range(index, index + 5):
                         if dlog[a] not in dlogCrash:
                             dlogCrash.append(dlog[a])
         if killme:
             break
 
-        time.sleep(1)
+        time.sleep(5)
 
 
 def start_background_scan():
     b = threading.Thread(name='background_scanner', target=background_scanner)
     b.start()
 
-    # currTime = str(datetime.datetime.now())
-    # open(dmplog, "a").write(str(currTime[:19]+'     Starting background scan...\n'))
+    currTime = str(datetime.datetime.now())
+    open(dmplog, "a").write(str(currTime[:19] + '     Starting background scan...\n'))
 
 
 def stop_background_scan():
@@ -102,8 +98,8 @@ def stop_background_scan():
     global dlogCrash
     global dmp
 
-    # currTime = str(datetime.datetime.now())
-    # open(dmplog, "a").write(str(currTime[:19]+'     Stopping background scan\n'))
+    currTime = str(datetime.datetime.now())
+    open(dmplog, "a").write(str(currTime[:19] + '     Stopping background scan\n'))
 
     killme = True
 
@@ -111,7 +107,7 @@ def stop_background_scan():
         if '.dmp' in line:
             currTime = str(datetime.datetime.now())
             open(dmplog, "a").write(
-                str(currTime[:19] + '     Following entries was found in dlog1.txt during testscenario:\n' + line))
+                str(currTime[:19] + '     Following entries was found in dlog1.txt\n' + line))
 
     # currTime = str(datetime.datetime.now())
     # open(dmplog, "a").write(str(currTime[:19]+'     Dumps found:\n'))
@@ -127,9 +123,9 @@ def stop_background_scan():
 
 
 def main():
-    create_crashdump()
     start_background_scan()
-    time.sleep(10)
+    # create_crashdump()
+    time.sleep(5)
     stop_background_scan()
 
 

@@ -15,7 +15,6 @@ def start_notepad():
         notepad.Notepad.Edit.type_keys("FDE TEST" + str(x) + "{ENTER}")
 
     time.sleep(0.5)
-
     proc = []
 
     for p in psutil.process_iter():
