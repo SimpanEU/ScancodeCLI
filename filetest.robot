@@ -4,12 +4,12 @@ Suite Setup  Start Background Scan
 Suite Teardown    Stop Background Scan
 
 *** Test Cases ***
-Test
-    Create Dump     crashdumptest1.dmp
+Test CrashDumps
+    Create CrashDump
 
 Parse Log Information
-    Read FDE DLog  TextStr      MaxMinAgo
-    Read FDE DLog crashes
+    Read FDE DLog  TextStr    5
+    Read FDE DLog Crashes
     Preboot Bypass Logon  false
     SSO Chain Logon  false
 
@@ -21,7 +21,7 @@ System Tasks
     Verify Notepad Running
     Check If Win Activated
     Create Wakeup XML
-    Schedule Wakeup Task  Win10    Password1!
+    # Schedule Wakeup Task  Win10    Password1!
     # Start CPInfo
     # Change OS user password  User  pass123
     # Hibernate

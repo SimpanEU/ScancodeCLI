@@ -8,18 +8,18 @@ from robot.libraries.BuiltIn import BuiltIn
 dmplog = os.environ["SYSTEMDRIVE"] + "\\FDE_robot_dmplog.txt"
 
 
-def create_dump(name):
+def create_crashdump():
     fdedir = os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\"
     currTime = str(datetime.datetime.now())
     currTime = currTime[:19]
+    currTime = currTime.replace(' ', '').replace(':', '').replace('-', '')
 
     if not 'CrashDumps' in os.listdir(fdedir):
         os.mkdir(fdedir + 'CrashDumps')
 
     if 'CrashDumps' in os.listdir(fdedir):
-        file = fdedir + 'CrashDumps\\' + name
-        open(file, "wb").write(b'test')
-        time.sleep(1)
+        file = fdedir + 'CrashDumps\\' + currTime + '.dmp'
+        open(file, "wb").write(b'testdump')
 
 
 def background_scanner():
@@ -58,9 +58,12 @@ def background_scanner():
             for index, item in enumerate(dumps):
                 if item not in dmp:
                     currTime = str(datetime.datetime.now())
-                    test_name = BuiltIn().get_variable_value("${TEST_NAME}")
+                    # test_name = BuiltIn().get_variable_value("${TEST_NAME}")
+                    # open(dmplog, "a").write(
+                    #     str(currTime[:19] + '     Found ' + item + '      During ' + test_name + '\n'))
+
                     open(dmplog, "a").write(
-                        str(currTime[:19] + '     Found ' + item + '      During ' + test_name + '\n'))
+                        str(currTime[:19] + '     Found ' + item + '      During ' + '\n'))
                     dmp.append(item)
                     print(item, 'before IF')
                     if not 'archive' in item:
@@ -124,12 +127,10 @@ def stop_background_scan():
 
 
 def main():
-    # start_background_scan()
-    # time.sleep(10)
-    # stop_background_scan()
-    currTime = str(datetime.datetime.now())
-    currTime = currTime[:19]
-    print(currTime)
+    create_crashdump()
+    start_background_scan()
+    time.sleep(10)
+    stop_background_scan()
 
 
 if __name__ == "__main__":
