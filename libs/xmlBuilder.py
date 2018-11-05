@@ -80,6 +80,9 @@ def create_wakeup_xml():
     for num, name in enumerate(element):
         print(num, name)
 
+    print("Change value using element[ID].text = 'TEXT'")
+    # element[].text = ""
+    
     xml = et.tostring(root)
     with open('C:\WakeUpTask.xml', 'wb') as f:
         f.write(xml)
