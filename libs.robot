@@ -1,6 +1,6 @@
 *** Settings ***
 Library     logReader
-Library     sysTasks
+Library     system
 Library     registryReader
 Library     encryptionSpeed
 Library     xmlBuilder
