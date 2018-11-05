@@ -1,8 +1,8 @@
 *** Settings ***
-Library     logReader
 Library     system
+Library     crashdumps
+Library     logReader
 Library     registryReader
-Library     encryptionSpeed
 Library     xmlBuilder
+Library     speedTest
 Library     winAuto
-Library     crashNotify
