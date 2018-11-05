@@ -54,11 +54,8 @@ def background_scanner():
         for item in os.listdir(pathCrash):
             if item not in dmp:
                 currTime = str(datetime.datetime.now())
-                # test_name = BuiltIn().get_variable_value("${TEST_NAME}")
-                # open(dmplog, "a").write(str(currTime[:19] + '     Found ' + item + '      During ' + test_name + '\n'))
-
-                open(dmplog, "a").write(str(currTime[:19] + '     Found ' + item + '      During ' + '\n'))
-
+                test_name = BuiltIn().get_variable_value("${TEST_NAME}")
+                open(dmplog, "a").write(str(currTime[:19] + '     Found ' + item + '      During ' + test_name + '\n'))
                 dmp.append(item)
                 if '.dmp' in item:
                     os.rename(pathCrash + item, pathArch + item)
@@ -109,22 +106,14 @@ def stop_background_scan():
             open(dmplog, "a").write(
                 str(currTime[:19] + '     Following entries was found in dlog1.txt\n' + line))
 
-    # currTime = str(datetime.datetime.now())
-    # open(dmplog, "a").write(str(currTime[:19]+'     Dumps found:\n'))
-    # for item in dmp:
-    #     if '.dmp' in item:
-    #         currTime = str(datetime.datetime.now())
-    #         open(dmplog, "a").write(str(currTime[:19]+'     '+item+'\n'))
-    # print(item)
-
     for item in dmp:
         if '.dmp' in item:
             assert False, "CrashDumps found during test suite"
 
 
 def main():
-    start_background_scan()
-    # create_crashdump()
+    start_background_scan() # test_name variable can only be set running via robotframework.
+    create_crashdump()
     time.sleep(5)
     stop_background_scan()
 
