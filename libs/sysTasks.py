@@ -89,9 +89,8 @@ def verify_cpinfo_files():
             print(line)
             bootEnvironment = 'UEFI'
 
-    cpinfoPath = os.environ["USERPROFILE"] + "\\CPInfo\\"
-
     # Sort all folders in date order and save name for the newest one.
+    cpinfoPath = os.environ["USERPROFILE"] + "\\CPInfo\\"
     os.chdir(cpinfoPath)
     cpinforZip = sorted(os.listdir(os.getcwd()), key=os.path.getmtime)[-1]
 
