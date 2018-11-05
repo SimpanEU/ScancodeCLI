@@ -89,31 +89,28 @@ def verify_cpinfo_files():
             print(line)
             bootEnvironment = 'UEFI'
 
-    # Sort all folders in date order and save name for the newest one.
-    cpinfoPath = os.environ["USERPROFILE"] + "\\CPInfo\\"
-    os.chdir(cpinfoPath)
-    cpinforZip = sorted(os.listdir(os.getcwd()), key=os.path.getmtime)[-1]
-
-    # Saves all files inside the .zip to a list.
-    files = str(zipfile.ZipFile(cpinfoPath + cpinforZip + '\\' + cpinforZip + '.zip').namelist())
+    path = os.environ["USERPROFILE"] + "\\CPInfo\\"
+    os.chdir(path)
+    cpiZip = sorted(os.listdir(path), key=os.path.getmtime)[-1]
+    files = str(zipfile.ZipFile(path + cpiZip + '\\' + cpiZip + '.zip').namelist())
 
     if bootEnvironment == 'UEFI':
         assert 'preboot.cab' in files
         assert 'dlog1.txt' in files
         assert 'FDE_dlog.txt' in files
         assert 'dlogs' in files
-        print(bootEnvironment, 'preboot.cab, dlog1.txt, FDE_dlog.txt and dlogs dir found in', cpinforZip + '.zip')
+        print(bootEnvironment, 'preboot.cab, dlog1.txt, FDE_dlog.txt and dlogs dir found in', cpiZip + '.zip')
 
     elif bootEnvironment == 'BIOS':
         assert 'preboot.cab' in files
         assert 'dlog1.txt' in files
         assert 'FDE_dlog.txt' in files
         assert 'dlogs' in files
-        print(bootEnvironment, 'preboot.cab, dlog1.txt, FDE_dlog.txt and dlogs dir found in', cpinforZip + '.zip')
+        print(bootEnvironment, 'preboot.cab, dlog1.txt, FDE_dlog.txt and dlogs dir found in', cpiZip + '.zip')
 
     else:
-        print(bootEnvironment, 'preboot.cab, dlog1.txt, FDE_dlog.txt and dlogs dir COULD NOT BE FOUND in',
-              cpinforZip + '.zip')
+        print(bootEnvironment, 'FILES MISSING IN',
+              cpiZip + '.zip')
         assert False
 
 
@@ -197,7 +194,7 @@ def reboot():
 
 
 def main():
-    start_notepad()
+    verify_cpinfo_files()
 
 
 if __name__ == "__main__":

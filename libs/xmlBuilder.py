@@ -41,26 +41,26 @@ def create_wakeup_xml():
     for name in actions:
         element.append(et.SubElement(element[4], name))
 
-    # triggers>timetrigger children
+    # Triggers>TimeTrigger children
     element.append(et.SubElement(element[8], 'Repetition'))
     element.append(et.SubElement(element[8], 'StartBoundary'))
     element.append(et.SubElement(element[8], 'Enabled'))
 
-    # timetrigger>repetition children
+    # Triggers>TimeTrigger>Repetition children
     element.append(et.SubElement(element[25], 'Interval'))
     element.append(et.SubElement(element[25], 'Duration'))
     element.append(et.SubElement(element[25], 'StopAtDurationEnd'))
 
-    # principals>principal children
+    # Principals>Principal children
     element.append(et.SubElement(element[9], 'UserId'))
     element.append(et.SubElement(element[9], 'LogonType'))
     element.append(et.SubElement(element[9], 'RunLevel'))
 
-    # settings>idlesettings children
+    # Settings>IdleSettings children
     element.append(et.SubElement(element[16], 'StopOnIdleEnd'))
     element.append(et.SubElement(element[16], 'RestartOnIdle'))
 
-    # actions>exec children
+    # Actions>Exec children
     element.append(et.SubElement(element[24], 'Command'))
 
     currentTime = str(datetime.datetime.now())
@@ -78,11 +78,11 @@ def create_wakeup_xml():
         element[num].text = value
 
     for num, name in enumerate(element):
-        print(num, name)
+        print(num, name, element[num].text)
 
-    print("Change value using element[ID].text = 'TEXT'")
-    # element[].text = ""
-    
+    print("\nChange value using element[ID].text = 'VALUE'")
+    # element[ID].text = 'VALUE'
+
     xml = et.tostring(root)
     with open('C:\WakeUpTask.xml', 'wb') as f:
         f.write(xml)

@@ -4,6 +4,9 @@ Suite Setup  Start Background Scan
 Suite Teardown    Stop Background Scan
 
 *** Test Cases ***
+Test
+    Create Dump     crashdumptest1.dmp
+
 Parse Log Information
     Read FDE DLog  TextStr      MaxMinAgo
     Read FDE DLog crashes
@@ -11,7 +14,6 @@ Parse Log Information
     SSO Chain Logon  false
 
 System Tasks
-    Create Dump     crashdump1.dmp
     Read Release Build
     Start Notepad
     Verify CPE Agent Running
@@ -26,7 +28,6 @@ System Tasks
     # Reboot
 
 Read Registry Values
-    Create Dump     crashdump2.dmp
     Read Client Status  70
     Read Encryption State  2    AES-CBC
     Read wol status  false
@@ -40,4 +41,4 @@ Windows Automation
     Open Tray
     Check FDE Status
     Screenshot
-    # Collect Policies (Not imp)
+    # Collect Policies (Not imp.)
