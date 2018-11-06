@@ -19,7 +19,7 @@ def check_fde_status():
     app = Application(backend="win32").connect(path=cptrayUI)
     dlg = app.window(title='Check Point Endpoint Security')
 
-    #dlg.wait('ready')
+    # dlg.wait('ready')
     dlg[u'Full Disk Encryption'].click_input()
 
     screenshot()

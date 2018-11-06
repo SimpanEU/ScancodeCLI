@@ -55,7 +55,8 @@ def background_scanner():
             if item not in dmp and 'archive' not in item:
                 currTime = str(datetime.datetime.now())
                 test_name = BuiltIn().get_variable_value("${TEST_NAME}")
-                open(dmplog, "a").write(str(currTime[:19] + '     Found "' + item + '"      During "' + str(test_name) + '"\n'))
+                open(dmplog, "a").write(
+                    str(currTime[:19] + '     Found "' + item + '"      During "' + str(test_name) + '"\n'))
                 dmp.append(item)
                 if '.dmp' in item:
                     os.rename(pathCrash + item, pathArch + item)
@@ -112,7 +113,7 @@ def stop_background_scan():
 
 
 def main():
-    start_background_scan() # test_name variable can only be set running via robotframework.
+    start_background_scan()  # test_name variable can only be set running via robotframework.
     create_crashdump()
     time.sleep(10)
     stop_background_scan()
