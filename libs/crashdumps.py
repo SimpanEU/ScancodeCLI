@@ -52,10 +52,10 @@ def background_scanner():
         dlog = list(open(pathFde + 'dlog1.txt'))
 
         for item in os.listdir(pathCrash):
-            if item not in dmp:
+            if item not in dmp and 'archive' not in item:
                 currTime = str(datetime.datetime.now())
                 test_name = BuiltIn().get_variable_value("${TEST_NAME}")
-                open(dmplog, "a").write(str(currTime[:19] + '     Found ' + item + '      During ' + test_name + '\n'))
+                open(dmplog, "a").write(str(currTime[:19] + '     Found "' + item + '"      During "' + str(test_name) + '"\n'))
                 dmp.append(item)
                 if '.dmp' in item:
                     os.rename(pathCrash + item, pathArch + item)
@@ -79,7 +79,7 @@ def background_scanner():
         if killme:
             break
 
-        time.sleep(5)
+        time.sleep(1)
 
 
 def start_background_scan():
@@ -96,7 +96,7 @@ def stop_background_scan():
     global dmp
 
     currTime = str(datetime.datetime.now())
-    open(dmplog, "a").write(str(currTime[:19] + '     Stopping background scan\n'))
+    open(dmplog, "a").write(str(currTime[:19] + '     Stopping background scan...\n'))
 
     killme = True
 

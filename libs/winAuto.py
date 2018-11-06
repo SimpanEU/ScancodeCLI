@@ -9,13 +9,17 @@ import warnings
 
 
 def check_fde_status():
-    warnings.simplefilter('ignore', category=UserWarning)
-
+    # warnings.resetwarnings()
+    # warnings.simplefilter('ignore', category=UserWarning)
+    # warnings.simplefilter('ignore', category=DeprecationWarning)
+    # warnings.filterwarnings("ignore", category=UserWarning)
+    # warnings.filterwarnings("ignore", category=DeprecationWarning)
+    #
     cptrayUI = os.environ["ProgramFiles(x86)"] + "\\CheckPoint\\Endpoint Security\\UIFramework\\bin\\cptrayUI.exe"
-    app = Application().connect(path=cptrayUI)
+    app = Application(backend="win32").connect(path=cptrayUI)
     dlg = app.window(title='Check Point Endpoint Security')
 
-    dlg.wait('ready')
+    #dlg.wait('ready')
     dlg[u'Full Disk Encryption'].click_input()
 
     screenshot()

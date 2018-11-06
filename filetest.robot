@@ -35,10 +35,10 @@ Read Registry Values
 
 FDE Speed Test
     Read Disk Size
-    Write new file  1GB     1
+    #Write new file  1GB     1
 
 Windows Automation
     Open Tray
     Check FDE Status
     Screenshot
-    # Collect Policies (Not imp.)
+   # Collect Policies (Not imp.)

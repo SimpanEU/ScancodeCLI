@@ -133,35 +133,36 @@ def check_if_win_activated():
             print(line)
 
 
-def check_if_win_activated_wmic(arg1):
-    if isinstance(arg1, str):
-        if "TRUE" in arg1 or "True" in arg1 or "true" in arg1:
-            arg1 = True
-        elif "FALSE" in arg1 or "False" in arg1 or "false" in arg1:
-            arg1 = False
-    open('C:\\wa.ps1', 'wb').write(
-        b'Get-CimInstance -ClassName SoftwareLicensingProduct | Where-Object PartialProductKey | Select-Object Name, ApplicationId, LicenseStatus | out-file C:\\isActivated.txt -Encoding UTF8')
-    p = subprocess.Popen(['powershell.exe', '-ExecutionPolicy', 'Unrestricted', 'C:\\wa.ps1'], stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE)
-    p.communicate()
-
-    with open('C:\\isActivated.txt', "r") as myfile:
-        key = myfile.read()
-        key = key[-4:]
-    key = switch_license(key)
-
-    if arg1:
-        if key is 'Licensed':
-            print('Key is activated, current status: ' + key)
-            assert True
-        else:
-            assert False
-    if not arg1:
-        if key is 'Licensed':
-            print('Key is activated, current status: ' + key)
-            assert False
-        else:
-            print('Key is in ' + key + ' status.')
+# def check_if_win_activated_wmic(arg1):
+#     # Not win7 compatible.
+#     if isinstance(arg1, str):
+#         if "TRUE" in arg1 or "True" in arg1 or "true" in arg1:
+#             arg1 = True
+#         elif "FALSE" in arg1 or "False" in arg1 or "false" in arg1:
+#             arg1 = False
+#     open('C:\\wa.ps1', 'wb').write(
+#         b'Get-CimInstance -ClassName SoftwareLicensingProduct | Where-Object PartialProductKey | Select-Object Name, ApplicationId, LicenseStatus | out-file C:\\isActivated.txt -Encoding UTF8')
+#     p = subprocess.Popen(['powershell.exe', '-ExecutionPolicy', 'Unrestricted', 'C:\\wa.ps1'], stdout=subprocess.PIPE,
+#                          stderr=subprocess.PIPE)
+#     p.communicate()
+#
+#     with open('C:\\isActivated.txt', "r") as myfile:
+#         key = myfile.read()
+#         key = key[-4:]
+#     key = switch_license(key)
+#
+#     if arg1:
+#         if key is 'Licensed':
+#             print('Key is activated, current status: ' + key)
+#             assert True
+#         else:
+#             assert False
+#     if not arg1:
+#         if key is 'Licensed':
+#             print('Key is activated, current status: ' + key)
+#             assert False
+#         else:
+#             print('Key is in ' + key + ' status.')
 
 
 def switch_license(arg1):
