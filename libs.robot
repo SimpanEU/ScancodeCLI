@@ -1,6 +1,6 @@
 *** Settings ***
 Library     system
-Library     crashdumps
+Library     crashdumpScan
 Library     logReader
 Library     registryReader
 Library     xmlBuilder
