@@ -195,7 +195,7 @@ def reboot():
 
 def main():
     verify_cpinfo_files()
-
+    check_if_win_activated()
 
 if __name__ == "__main__":
     main()

@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as et
 import datetime
+import os
 
 
 def create_wakeup_xml():
@@ -65,14 +66,15 @@ def create_wakeup_xml():
 
     currentTime = str(datetime.datetime.now())
     currentTime = currentTime[:10] + 'T' + currentTime[11:19]
-    print(currentTime)
 
+    xmlPath = os.environ["SYSTEMDRIVE"] + '\\WakeupTask.xml'
+    wakePath = os.environ["SYSTEMDRIVE"] + '\\Wakeup.bat'
     values = ["", "", "", "", "", currentTime, "SimonN", "\WakeUp", "", "", "IgnoreNew", "false", "false", "true",
               "false",
               "false", "", "true", "true", "false", "false", "true", "PT72H", "7", "", "", currentTime, "true", "PT1M",
               "PT30M", "false",
               "S-1-5-21-714594801-1865861827-2143135371-1001", "Password", "HighestAvailable", "true", "false",
-              "C:\\WakeUp.bat"]
+              wakePath]
 
     for num, value in enumerate(values):
         element[num].text = value
@@ -84,7 +86,7 @@ def create_wakeup_xml():
     # element[ID].text = 'VALUE'
 
     xml = et.tostring(root)
-    with open('C:\WakeUpTask.xml', 'wb') as f:
+    with open(xmlPath, 'wb') as f:
         f.write(xml)
 
 
