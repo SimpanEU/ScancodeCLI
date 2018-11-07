@@ -180,9 +180,12 @@ def switch_license(arg1):
 
 
 def schedule_wakeup_task(user, password):
-    open('C:\\WakeUp.bat', 'wb').write(b'echo hello')
+    wakePath = os.environ["SYSTEMDRIVE"] + '\\Wakeup.bat'
+
+    open(wakePath, 'wb').write(b'echo hello')
     cmd = "schtasks.exe /CREATE /TN WakeUpTask /XML c:\WakeUpTask.xml /F /RU " + user + " /RP " + password
     subprocess.Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE).communicate()
+    print("Wakeup task scheduled.")
 
 
 def hibernate():
@@ -196,6 +199,7 @@ def reboot():
 def main():
     verify_cpinfo_files()
     check_if_win_activated()
+
 
 if __name__ == "__main__":
     main()
