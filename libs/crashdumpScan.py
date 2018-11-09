@@ -8,16 +8,18 @@ from robot.libraries.BuiltIn import BuiltIn
 
 def create_crashdump():
     fdedir = os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\"
-    currTime = str(datetime.datetime.now())
-    currTime = currTime[:19]
-    currTime = currTime.replace(' ', '').replace(':', '').replace('-', '')
 
     if not 'CrashDumps' in os.listdir(fdedir):
         os.mkdir(fdedir + 'CrashDumps')
 
     if 'CrashDumps' in os.listdir(fdedir):
+        currTime = str(datetime.datetime.now())
+        currTime = currTime[:19]
+        currTime = currTime.replace(' ', '').replace(':', '').replace('-', '')
         file = fdedir + 'CrashDumps\\' + currTime + '.dmp'
         open(file, "wb").write(b'testdump')
+
+    time.sleep(2)
 
 
 def background_scanner():
@@ -80,7 +82,7 @@ def background_scanner():
         if killme:
             break
 
-        time.sleep(1)
+        time.sleep(0.5)
 
 
 def start_background_scan():
@@ -106,6 +108,12 @@ def stop_background_scan():
             currTime = str(datetime.datetime.now())
             open(dmplog, "a").write(
                 str(currTime[:19] + '     Following entries was found in dlog1.txt\n' + line))
+
+    for line in reversed(list(open(dmplog, 'r'))):
+        if ".dmp" in line:
+            print(line)
+        if "Starting background scan..." in line:
+            break
 
     for item in dmp:
         if '.dmp' in item:

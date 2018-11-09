@@ -4,7 +4,9 @@ Suite Setup  Start Background Scan
 Suite Teardown    Stop Background Scan
 
 *** Test Cases ***
-Test CrashDumps
+CrashDumps
+    Create CrashDump
+    Create CrashDump
     Create CrashDump
 
 Parse Log Information
