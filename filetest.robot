@@ -34,6 +34,7 @@ Read Registry Values
     Read Encryption State  2    AES-CBC
     Read wol status  false
     Read wil status  false
+    Read Screensaver Text       Simpan
 
 FDE Speed Test
     Read Disk Size

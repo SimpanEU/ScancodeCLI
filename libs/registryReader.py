@@ -137,8 +137,20 @@ def switch_cipher(argument):
     }.get(argument, "Invalid cipher")
 
 
+def read_screensaver_text(arg1):
+    hkey = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
+                          r'SOFTWARE\Microsoft\Windows\CurrentVersion\Screensavers\ssText3d',
+                          0, winreg.KEY_READ)
+    screensaver, type = winreg.QueryValueEx(hkey, "DisplayString")
+    winreg.CloseKey(hkey)
+    print(screensaver)
+
+    assert arg1 == str(screensaver)
+
+
 def main():
-    read_client_status(70)
+    # read_client_status(70)
+    read_screensaver_text("Simpan")
 
 
 if __name__ == "__main__":
