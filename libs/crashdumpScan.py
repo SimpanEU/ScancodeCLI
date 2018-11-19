@@ -7,6 +7,7 @@ from robot.libraries.BuiltIn import BuiltIn
 
 
 def create_crashdump():
+    # Only for testing purpose
     fdedir = os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\"
 
     if not 'CrashDumps' in os.listdir(fdedir):
@@ -73,8 +74,8 @@ def background_scanner():
                 crashTime = re.split(r'\t', line)
                 crashTime = time.mktime(time.strptime(crashTime[0][:15], "%Y%m%d %H%M%S"))
 
-                # Read last 10 seconds from dlog1.txt, appending any line containing
-                # logging about crashdumps for later printout.
+                # Reads last 10 seconds from dlog1.txt, appending any line containing
+                # logs about crashdumps.
                 if (lastLogTime - crashTime) < 10:
                     for a in range(index, index + 5):
                         if dlog[a] not in dlogCrash:

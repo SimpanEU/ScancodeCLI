@@ -92,7 +92,7 @@ def verify_cpinfo_files():
     os.chdir(path)
     cpiZip = sorted(os.listdir(path), key=os.path.getmtime)[-1]
     files = str(zipfile.ZipFile(path + cpiZip + '\\' + cpiZip + '.zip').namelist())
-
+    print(files)
     if bootEnvironment == 'UEFI':
         assert 'preboot.cab' in files
         assert 'dlog1.txt' in files

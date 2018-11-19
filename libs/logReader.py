@@ -67,8 +67,10 @@ def read_fde_dlog_crashes(minutes=False):
 def sso_chain_logon(arg1):
     ssoTime = None
     onecheckTime = None
+    autologonTime = None
     ssoFound = False
     onecheckFound = False
+    autologonFound = False
 
     if isinstance(arg1, str):
         if "TRUE" in arg1 or "True" in arg1 or "true" in arg1:
@@ -80,6 +82,7 @@ def sso_chain_logon(arg1):
             open(os.environ["ALLUSERSPROFILE"] + "\\CheckPoint\\Endpoint Security\\Full Disk Encryption\\dlog1.txt"))):
         ssoLog = 'SSO data initialized SUCCESSFULLY.'
         onecheckLog = 'OneCheck repository unlocked successfully.'
+        autologonLog = 'Credential type: autologon'
 
         if ssoLog in line and not ssoFound:
             print(line, end="")
@@ -91,16 +94,34 @@ def sso_chain_logon(arg1):
             onecheckTime = re.split(r'\t', line)
             onecheckFound = True
 
+        if autologonLog in line and not autologonFound:
+            print(line, end="")
+            autologonTime = re.split(r'\t', line)
+            autologonFound = True
+
     if ssoFound == True and onecheckFound == True:
         onecheckEpoch = time.mktime(time.strptime(onecheckTime[0][:15], "%Y%m%d %H%M%S"))
         ssoEpoch = time.mktime(time.strptime(ssoTime[0][:15], "%Y%m%d %H%M%S"))
 
+    if autologonFound:
+        autologonEpoch = time.mktime(time.strptime(autologonTime[0][:15], "%Y%m%d %H%M%S"))
+
     if arg1 is True:
+        if ssoFound == True and onecheckFound == True and autologonFound == True:
+            assert (onecheckEpoch - ssoEpoch) < 2 and (onecheckEpoch - ssoEpoch) >= 0 and (
+                    autologonEpoch - ssoEpoch) < 2 and (
+                           autologonEpoch - ssoEpoch) >= 0, 'No SSO chain found for last login.'
+        else:
+            assert False, 'Missing "Credential type: autologon" log in dlog1'
+
+    elif arg1 is False and autologonFound is True:
+        assert (autologonEpoch - ssoEpoch) > 2 or (autologonEpoch - ssoEpoch) < 0, 'SSO chain found last login.'
+
+    elif arg1 is False and autologonFound is False:
+        autologonEpoch = 0
         if ssoFound == True and onecheckFound == True:
-            assert (onecheckEpoch - ssoEpoch) < 2 and (onecheckEpoch - ssoEpoch) >= 0, 'No SSO chain for last login.'
-    elif arg1 is False:
-        if ssoFound == True and onecheckFound == True:
-            assert (onecheckEpoch - ssoEpoch) > 2 or (onecheckEpoch - ssoEpoch) < 0, 'SSO chain for last login.'
+            assert (autologonEpoch - ssoEpoch) < 0, 'SSO chain found last login.'
+
     else:
         assert False, 'Invalid input(true/false)'
 
@@ -156,7 +177,8 @@ def preboot_bypass_logon(arg1):
 
 
 def main():
-    read_fde_dlog_crashes()
+    # read_fde_dlog_crashes()
+    sso_chain_logon(True)
 
 
 if __name__ == "__main__":

@@ -1,20 +1,15 @@
 from pywinauto import Application
 from PIL import ImageGrab
+from subprocess import PIPE
 import os
 import time
 import datetime
 import win32gui
 import win32con
-import warnings
+import subprocess
 
 
 def check_fde_status():
-    # warnings.resetwarnings()
-    # warnings.simplefilter('ignore', category=UserWarning)
-    # warnings.simplefilter('ignore', category=DeprecationWarning)
-    # warnings.filterwarnings("ignore", category=UserWarning)
-    # warnings.filterwarnings("ignore", category=DeprecationWarning)
-    #
     cptrayUI = os.environ["ProgramFiles(x86)"] + "\\CheckPoint\\Endpoint Security\\UIFramework\\bin\\cptrayUI.exe"
     app = Application(backend="win32").connect(path=cptrayUI)
     dlg = app.window(title='Check Point Endpoint Security')
@@ -29,6 +24,7 @@ def check_fde_status():
 
 
 def open_tray():
+
     def get_handle(name):
         def check(hwnd, param):
             title = win32gui.GetWindowText(hwnd)
@@ -50,12 +46,12 @@ def open_tray():
         win32gui.UpdateWindow(w)
         win32gui.SetActiveWindow(w)
 
+
     hWnd = get_handle('Check Point Endpoint Security')
     hWnd = int(hWnd[0])
-
     show(hWnd)
-
     win32gui.EnumChildWindows(hWnd, callback, 0)
+
 
 
 def collect_policies():

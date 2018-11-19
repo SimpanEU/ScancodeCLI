@@ -137,7 +137,7 @@ def switch_cipher(argument):
     }.get(argument, "Invalid cipher")
 
 
-def read_screensaver_text(arg1):
+def read_win_3d_screensaver_text(arg1):
     hkey = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
                           r'SOFTWARE\Microsoft\Windows\CurrentVersion\Screensavers\ssText3d',
                           0, winreg.KEY_READ)
@@ -148,9 +148,25 @@ def read_screensaver_text(arg1):
     assert arg1 == str(screensaver)
 
 
+def read_eps_screensaver_text(arg1):
+    bit = platform.architecture()
+    if "64" in bit[0]:
+        bit = "\WOW6432Node"
+    else:
+        bit = ""
+    hkey = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,
+                          r'SOFTWARE' + bit + '\CheckPoint\Endpoint Security\OneCheck',
+                          0, winreg.KEY_READ)
+    epsText, type = winreg.QueryValueEx(hkey, "ScreenSaverText")
+    winreg.CloseKey(hkey)
+
+    print(epsText)
+    assert arg1 == str(epsText)
+
+
 def main():
     # read_client_status(70)
-    read_screensaver_text("Simpan")
+    read_win_3d_screensaver_text("Simpan")
 
 
 if __name__ == "__main__":

@@ -69,6 +69,7 @@ def create_wakeup_xml():
 
     xmlPath = os.environ["SYSTEMDRIVE"] + '\\WakeupTask.xml'
     wakePath = os.environ["SYSTEMDRIVE"] + '\\Wakeup.bat'
+
     values = ["", "", "", "", "", currentTime, "SimonN", "\WakeUp", "", "", "IgnoreNew", "false", "false", "true",
               "false",
               "false", "", "true", "true", "false", "false", "true", "PT72H", "7", "", "", currentTime, "true", "PT1M",
@@ -82,8 +83,9 @@ def create_wakeup_xml():
     for num, name in enumerate(element):
         print(num, name, element[num].text)
 
-    print("\nChange value using element[ID].text = 'VALUE'")
     # element[ID].text = 'VALUE'
+    print("\nChange value using element[ID].text = 'VALUE'")
+    print("XML saved to", xmlPath)
 
     xml = et.tostring(root)
     with open(xmlPath, 'wb') as f:
