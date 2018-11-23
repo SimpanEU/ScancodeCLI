@@ -1,13 +1,14 @@
-from .codemodule import *
+from .scancodemodule import *
 import struct
 
-class MyClass():
+class ManuscriptCLI:
 
     def __init__(self, name):
         self.name = name
         self.version = 1
 
-    def create_manuscript(self, arg1, arg2, sleep):
+    @staticmethod
+    def create(arg1, arg2, sleep):
         newfile = open('C:\\manuscript.bin', 'wb')
 
         version = [b'V01']
@@ -26,3 +27,5 @@ class MyClass():
             code = key(c)
             newfile.write(struct.pack('1B', code))
             newfile.write(struct.pack('1h', sleep))
+
+        print('C:\\manuscript.bin created')
