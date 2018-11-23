@@ -2,7 +2,7 @@ cd /PrebootManuscriptCLI
 
 
 
-##Usage with param will create standard login scenarion:
+##Usage with param:
 python -m run -u \<username> -p \<passwd> -t \<timeout>
 
 
