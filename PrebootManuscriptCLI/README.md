@@ -1,7 +1,19 @@
-#### cd PrebootManuscriptCLI
-#### python -m run \<user> \<password> \<sleep>
+cd /PrebootManuscriptCLI
 
 
 
-##### eg. python -m run gary pass 32
-##### writes to C:\\manuscript.bin
+##Usage with param will create standard login scenarion:
+python -m run -u \<username> -p \<passwd> -t \<timeout>
+
+
+
+
+##Usage without param:
+python -m run
+
+Enter full string:
+e.g. username\<tab>password\<enter>
+
+
+
+writes to C:\\manuscript.bin

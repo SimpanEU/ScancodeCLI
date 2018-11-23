@@ -19,7 +19,6 @@ class ManuscriptCLI:
 
         # versiontest = [b'V01']
         # newfile.write(struct.pack('3s', *versiontest))
-        #
         # packetstest = 'P' + str(len(list(arg1)) + len(list(arg2)))
         # packetstest = bytes(packetstest, 'utf-8')
         # newfile.write(struct.pack('3b', *packetstest))
