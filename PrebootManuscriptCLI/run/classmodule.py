@@ -13,6 +13,7 @@ class ManuscriptCLI:
     def create(arg1=None, arg2=None, sleep=None):
         newfile = open(ManuscriptCLI.binfile, 'wb')
 
+        # If -u, -p and -t arguments given.
         if arg1 is not None and arg2 is not None and sleep is not None:
             newfile.write(struct.pack('I', ManuscriptCLI.version))
             packets = int(len(list(arg1)) + int(len(list(arg2))))
@@ -31,6 +32,7 @@ class ManuscriptCLI:
             print('Total packets:', packets)
             print(ManuscriptCLI.binfile, 'has been created!')
 
+        # If -s and -t arguments given, OR if running with no args.
         if arg1 is not None and arg2 is None and sleep is not None:
             packets = 0
             stringInput = arg1.replace('<', ' <').replace('>', '> ').split()
