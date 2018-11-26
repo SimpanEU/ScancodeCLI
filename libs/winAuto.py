@@ -7,6 +7,7 @@ import datetime
 import win32gui
 import win32con
 import subprocess
+from pywinauto import taskbar
 
 
 def check_fde_status():
@@ -23,8 +24,8 @@ def check_fde_status():
     app.kill()
 
 
-def open_tray():
-
+def open_cpe_agent():
+    
     def get_handle(name):
         def check(hwnd, param):
             title = win32gui.GetWindowText(hwnd)

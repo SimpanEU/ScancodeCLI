@@ -1,4 +1,3 @@
-from pywinauto import Application
 from subprocess import PIPE
 import subprocess
 import zipfile
@@ -8,11 +7,11 @@ import time
 
 
 def start_notepad():
-    # subprocess.Popen('notepad.exe')
-    notepad = Application().start("Notepad.exe")
+    # notepad = Application().start("Notepad.exe")
+    # for x in range(1, 11):
+    #     notepad.Notepad.Edit.type_keys("FDE TEST" + str(x) + "{ENTER}")
 
-    for x in range(1, 11):
-        notepad.Notepad.Edit.type_keys("FDE TEST" + str(x) + "{ENTER}")
+    subprocess.Popen('notepad.exe')
 
     time.sleep(0.5)
     proc = []
@@ -52,6 +51,7 @@ def change_os_user_password(user, password):
 
 def start_cpinfo():
     detailLevel = 1
+    
     dL = switch_detail_level(detailLevel)
 
     # Currently runs CPInfo with -q|-quiet parameter, uses general detail level.

@@ -1,4 +1,4 @@
-def key(arg1):
+def getKey(arg1):
     return {
         'backspace': 0x08,
         'tab': 0x09,
