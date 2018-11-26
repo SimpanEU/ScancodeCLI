@@ -5,11 +5,13 @@ def getKey(arg1):
     if arg1.isupper():
         key = getVK(arg1.lower())
         scancode = win32api.MapVirtualKey(key, 0)
+        print(arg1, scancode)
         return scancode
 
     else:
         key = getVK(arg1)
         scancode = win32api.MapVirtualKey(key, 2)
+        print(arg1, scancode)
         return scancode
 
 

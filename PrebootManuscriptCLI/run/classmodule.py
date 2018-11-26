@@ -3,6 +3,7 @@ import struct
 
 
 class ManuscriptCLI:
+
     version = 1
     binfile = 'C:\\manuscript.bin'
 
