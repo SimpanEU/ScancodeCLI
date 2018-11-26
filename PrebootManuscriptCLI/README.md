@@ -6,11 +6,11 @@ Accepted arguments:
 -t \<default timeout in ms>  
 -s \<"string">  
 
-### Create manuscript using username and password:
+### Create manuscript using username and password arguments:
 python -m run -u username -p password -t 32
 
 
-### Create manuscript using string:
+### Create manuscript using string argument:
 python -m run -s "username\<tab>password\<enter>" -t 32
 
 
