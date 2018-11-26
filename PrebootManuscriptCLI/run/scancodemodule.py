@@ -1,4 +1,19 @@
+import win32api
+
+
 def getKey(arg1):
+    if arg1.isupper():
+        key = getVK(arg1.lower())
+        scancode = win32api.MapVirtualKey(key, 0)
+        return scancode
+
+    else:
+        key = getVK(arg1)
+        scancode = win32api.MapVirtualKey(key, 2)
+        return scancode
+
+
+def getVK(arg1):
     return {
         'backspace': 0x08,
         'tab': 0x09,

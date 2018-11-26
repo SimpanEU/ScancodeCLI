@@ -17,7 +17,7 @@ def main():
         print('----------------------------------------')
         print('Enter a full string to convert:\nE.g. user<tab>password<enter>')
         s = input()
-        print('\nEnter default timeout value:')
+        print('\nEnter default timeout value in ms:')
         timeout = input()
         cli_object.create(s, None, timeout)
 
