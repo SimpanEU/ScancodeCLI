@@ -7,15 +7,15 @@ def getKey(arg1):
         key = getVK(arg1.lower())
         print(' ... Virtual Key =', key, end="")
         scancode = win32api.MapVirtualKey(key, 0)
-        print(' ... Scan Code =', scancode)
+        print(' ... Scan Code =', scancode, ' ... Packets = 4')
         return scancode
 
     else:
         print('Input =', arg1, end="")
         key = getVK(arg1)
         print(' ... Virtual Key =', key, end="")
-        scancode = win32api.MapVirtualKey(key, 2)
-        print(' ... Scan Code =', scancode)
+        scancode = win32api.MapVirtualKey(key, 0)
+        print(' ... Scan Code =', scancode, ' ... Packets = 2')
         return scancode
 
 

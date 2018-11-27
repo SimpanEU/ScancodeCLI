@@ -3,7 +3,7 @@ import struct
 
 
 class ManuscriptCLI:
-    version = 1
+    version = 2
     binfile = 'C:\\manuscript.bin'
 
     def __init__(self, name):
@@ -13,35 +13,97 @@ class ManuscriptCLI:
     def create(arg1=None, arg2=None, sleep=None):
         newfile = open(ManuscriptCLI.binfile, 'wb')
 
+        def writeUpper(keycode, timeoutms):
+            # Shift Key Down
+            newfile.write(struct.pack('1B', 0))
+            newfile.write(struct.pack('1H', int(timeoutms)))
+            newfile.write(struct.pack('1B', 42))
+            # Char Key Down
+            newfile.write(struct.pack('1B', 0))
+            newfile.write(struct.pack('1H', int(timeoutms)))
+            newfile.write(struct.pack('1B', keycode))
+            # Char Key Up
+            newfile.write(struct.pack('1B', 1))
+            newfile.write(struct.pack('1H', int(timeoutms)))
+            newfile.write(struct.pack('1B', keycode))
+            # Shift Key Up
+            newfile.write(struct.pack('1B', 1))
+            newfile.write(struct.pack('1H', int(timeoutms)))
+            newfile.write(struct.pack('1B', 42))
+
+        def writeLower(keycode, timeoutms):
+            # Char Key Down
+            newfile.write(struct.pack('1B', 0))
+            newfile.write(struct.pack('1H', int(timeoutms)))
+            newfile.write(struct.pack('1B', keycode))
+            # Char Key Up
+            newfile.write(struct.pack('1B', 1))
+            newfile.write(struct.pack('1H', int(timeoutms)))
+            newfile.write(struct.pack('1B', keycode))
+
+        def writeSpecial(keycode, timeoutms):
+            # Special Key Down
+            newfile.write(struct.pack('1B', 0))
+            newfile.write(struct.pack('1H', int(timeoutms)))
+            newfile.write(struct.pack('1B', keycode))
+            # Special Key Up
+            newfile.write(struct.pack('1B', 1))
+            newfile.write(struct.pack('1H', int(timeoutms)))
+            newfile.write(struct.pack('1B', keycode))
+
+        def writeHeader(pack):
+            newfile.write(struct.pack('I', ManuscriptCLI.version))
+            newfile.write(struct.pack('I', pack))
+
+        def writeSleep(timeoutms):
+            newfile.write(struct.pack('1B', 2))
+            newfile.write(struct.pack('1H', int(timeoutms)))
+            newfile.write(struct.pack('1B', 0))
+            print('Input = sleep', timeoutms, 'ms ... Packets = 1')
+
+
         # If -u, -p and -t arguments given.
         if arg1 is not None and arg2 is not None and sleep is not None:
-            newfile.write(struct.pack('I', ManuscriptCLI.version))
-            packets = int(len(list(arg1)) + int(len(list(arg2)))) + 3
-            newfile.write(struct.pack('I', packets))
+            packets = 0
+
+            for char in list(arg1):
+                if char.isupper():
+                    packets += 4
+                else:
+                    packets += 2
+            for char in list(arg2):
+                if char.isupper():
+                    packets += 4
+                else:
+                    packets += 2
+
+            packets += 6
+            writeHeader(packets)
 
             # Username
             for c in list(arg1):
-                code = getKey(c)
-                newfile.write(struct.pack('1B', code))
-                newfile.write(struct.pack('1h', sleep))
+                if c.isupper():
+                    writeUpper(getKey(c), sleep)
+                else:
+                    writeLower(getKey(c), sleep)
 
             # Tab
-            newfile.write(struct.pack('1B', getKey('tab')))
-            newfile.write(struct.pack('1h', sleep))
+            writeSpecial(getKey('tab'), sleep)
 
             # Password
             for c in list(arg2):
-                code = getKey(c)
-                newfile.write(struct.pack('1B', code))
-                newfile.write(struct.pack('1h', sleep))
+                if c.isupper():
+                    writeUpper(getKey(c), sleep)
+                else:
+                    writeLower(getKey(c), sleep)
 
             # Enter, Enter
-            newfile.write(struct.pack('1B', getKey('enter')))
-            newfile.write(struct.pack('1h', sleep))
-            newfile.write(struct.pack('1B', getKey('enter')))
-            newfile.write(struct.pack('1h', sleep))
+            writeSpecial(getKey('enter'), sleep)
+            writeSpecial(getKey('enter'), sleep)
+
             print('\nTotal packets:', packets)
             print(ManuscriptCLI.binfile, 'has been created!')
+
 
         # If -s and -t arguments given, OR if running with no args.
         if arg1 is not None and arg2 is None and sleep is not None:
@@ -49,26 +111,31 @@ class ManuscriptCLI:
             stringInput = arg1.replace('<', ' <').replace('>', '> ').split()
 
             for word in stringInput:
-                if '<' and '>' in word:
+                if '<' and '>' and 'sleep' in word:
                     packets += 1
+                elif '<' and '>' in word:
+                    packets += 2
                 else:
                     for char in list(word):
-                        packets += 1
-
-            newfile.write(struct.pack('I', ManuscriptCLI.version))
-            newfile.write(struct.pack('I', packets))
+                        if char.isupper():
+                            packets += 4
+                        else:
+                            packets += 2
+            writeHeader(packets)
 
             for word in stringInput:
-                if '<' and '>' in word:
+                if '<' and '>' and 'sleep' in word:
+                    sleeper = word.replace('<', '').replace('>', '').replace('sleep', '').replace('=', '')
+                    writeSleep(sleeper)
+                elif '<' and '>' in word:
                     code = word.replace('<', '').replace('>', '')
-                    code = getKey(code)
-                    newfile.write(struct.pack('1B', code))
-                    newfile.write(struct.pack('1h', int(sleep)))
+                    writeSpecial(getKey(code), sleep)
                 else:
                     for char in list(word):
-                        code = getKey(char)
-                        newfile.write(struct.pack('1B', code))
-                        newfile.write(struct.pack('1h', int(sleep)))
+                        if char.isupper():
+                            writeUpper(getKey(char), sleep)
+                        else:
+                            writeLower(getKey(char), sleep)
 
             print('\nTotal packets:', packets)
             print(ManuscriptCLI.binfile, 'has been created!')

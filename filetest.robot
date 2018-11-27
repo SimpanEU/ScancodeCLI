@@ -47,6 +47,7 @@ Read Registry Values
 
 Preboot Manuscript Login Scenario
     Create Scancode Bin  User  Password  32
+    Run Scancode Bin
 
 Endpoint Server Settings AutomationClient.exe
     CheckPoint Security Screensaver     false
