@@ -3,15 +3,19 @@ import win32api
 
 def getKey(arg1):
     if arg1.isupper():
+        print('Input =', arg1, end="")
         key = getVK(arg1.lower())
+        print(' ... Virtual Key =', key, end="")
         scancode = win32api.MapVirtualKey(key, 0)
-        print(arg1, scancode)
+        print(' ... Scan Code =', scancode)
         return scancode
 
     else:
+        print('Input =', arg1, end="")
         key = getVK(arg1)
+        print(' ... Virtual Key =', key, end="")
         scancode = win32api.MapVirtualKey(key, 2)
-        print(arg1, scancode)
+        print(' ... Scan Code =', scancode)
         return scancode
 
 

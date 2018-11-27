@@ -1,5 +1,14 @@
 *** Settings ***
-Resource    libs.robot
+Library     systemTests
+Library     crashdumpScan
+Library     logReader
+Library     registryReader
+Library     xmlBuilder
+Library     speedTest
+Library     winAuto
+Library     autoclientTool
+Library     prebootScancode
+
 Suite Setup  Start Background Scan
 Suite Teardown    Stop Background Scan
 
@@ -23,8 +32,8 @@ System Tests
     Start CPInfo
     Verify CPInfo files
     Create Wakeup XML
-    Schedule Wakeup Task  Win10    Password1!
-    Change OS user password  User  pass123
+    Schedule Wakeup Task  User   Passwd
+    Change OS user password  User   Passwd
     Hibernate
     Reboot
 
@@ -33,17 +42,19 @@ Read Registry Values
     Read Encryption State  2    AES-CBC
     Read wol status  false
     Read wil status  false
-    Read EPS Screensaver Text       Simpan
-    Read Win 3D Screensaver Text       Simpan
+    Read EPS Screensaver Text   Simpan
+    Read Win 3D Screensaver Text    Simpan
 
-Server Settings
+Preboot Manuscript Login Scenario
+    Create Scancode Bin  User  Password  32
+
+Endpoint Server Settings AutomationClient.exe
     CheckPoint Security Screensaver     false
     CheckPoint Security Screensaver Text    Simpan
 
 FDE Speed Test
-    Write new file  1GB     1
+    Write new file  1GB     10
 
 Windows Automation
     Open CPE Agent
-    #Check FDE Status
     Screenshot

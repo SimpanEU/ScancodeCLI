@@ -3,7 +3,6 @@ import struct
 
 
 class ManuscriptCLI:
-
     version = 1
     binfile = 'C:\\manuscript.bin'
 
@@ -17,20 +16,31 @@ class ManuscriptCLI:
         # If -u, -p and -t arguments given.
         if arg1 is not None and arg2 is not None and sleep is not None:
             newfile.write(struct.pack('I', ManuscriptCLI.version))
-            packets = int(len(list(arg1)) + int(len(list(arg2))))
+            packets = int(len(list(arg1)) + int(len(list(arg2)))) + 3
             newfile.write(struct.pack('I', packets))
 
+            # Username
             for c in list(arg1):
                 code = getKey(c)
                 newfile.write(struct.pack('1B', code))
                 newfile.write(struct.pack('1h', sleep))
 
+            # Tab
+            newfile.write(struct.pack('1B', getKey('tab')))
+            newfile.write(struct.pack('1h', sleep))
+
+            # Password
             for c in list(arg2):
                 code = getKey(c)
                 newfile.write(struct.pack('1B', code))
                 newfile.write(struct.pack('1h', sleep))
 
-            print('Total packets:', packets)
+            # Enter, Enter
+            newfile.write(struct.pack('1B', getKey('enter')))
+            newfile.write(struct.pack('1h', sleep))
+            newfile.write(struct.pack('1B', getKey('enter')))
+            newfile.write(struct.pack('1h', sleep))
+            print('\nTotal packets:', packets)
             print(ManuscriptCLI.binfile, 'has been created!')
 
         # If -s and -t arguments given, OR if running with no args.
