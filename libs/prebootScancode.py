@@ -1,10 +1,10 @@
 import os
 import subprocess
 import win32api
+import win32con
+import time
 from struct import unpack
 from subprocess import PIPE
-import time
-
 
 
 def create_scancode_bin(user, passwd, timeout):
@@ -17,6 +17,7 @@ def create_scancode_bin(user, passwd, timeout):
         print(cmd)
         subprocess.Popen(cmd, shell=True, stdin=PIPE, stderr=PIPE, stdout=PIPE).communicate()
 
+
 def run_scancode_bin():
     binfile = 'C:\\manuscript.bin'
     file = open(binfile, 'rb')
@@ -27,28 +28,35 @@ def run_scancode_bin():
     packets = int(len(file.read()))
     file.seek(8)
 
-    packet = []
-    vk = []
+    operation = []
+    timeout = []
+    scancode = []
+    virtualkey = []
+
     for i in range(packetcount[0]):
-        thisPacket = str(unpack("1b", file.read(1)))
-        thisPacket = thisPacket.replace("(", "").replace(")", "").replace(",", "")
-        packet.append(thisPacket)
-        unpack("h", file.read(2))
+        op = str(unpack("1B", file.read(1))).replace("(", "").replace(")", "").replace(",", "")
+        ti = str(unpack("1H", file.read(2))).replace("(", "").replace(")", "").replace(",", "")
+        sc = str(unpack("1B", file.read(1))).replace("(", "").replace(")", "").replace(",", "")
+        print('Packet:', i + 1, '=', op, ti, sc, win32api.MapVirtualKey(int(sc), 1))
+        operation.append(op)
+        timeout.append(ti)
+        scancode.append(sc)
+        virtualkey.append(win32api.MapVirtualKey(int(sc), 1))
 
-    for i in range(len(packet)):
-        scancode = packet[i]
-        virtualkey = win32api.MapVirtualKey(int(scancode), 1) # lower
-        vk.append(virtualkey)
-        # win32api.MapVirtualKey(int(scancode), 3)) # upper
+    for i in range(packetcount[0]):
+        if operation[i] == '0':
+            win32api.keybd_event(virtualkey[i], 0, 0, 0)
+            time.sleep(int(timeout[i]) / 1000)
 
-    for i in range(len(packet)):
-        win32api.keybd_event(int(vk[i]), int(packet[i]))
-        time.sleep(0.5)
+        elif operation[i] == '1':
+            win32api.keybd_event(virtualkey[i], 0, win32con.KEYEVENTF_KEYUP, 0)
+            time.sleep(int(timeout[i]) / 1000)
 
 
 def main():
-    #create_scancode_bin('simpan', 'password', '32')
+    create_scancode_bin('UsEr_1', 'PaSS123!!', '320')
     run_scancode_bin()
+
 
 if __name__ == "__main__":
     main()

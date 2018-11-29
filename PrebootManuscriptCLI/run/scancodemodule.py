@@ -2,7 +2,15 @@ import win32api
 
 
 def getKey(arg1):
-    if arg1.isupper():
+    if not arg1.isalpha() and not arg1.isdigit():
+        print('Input =', arg1, end="")
+        key = getVK(arg1)
+        print(' ... Virtual Key =', key, end="")
+        scancode = win32api.MapVirtualKey(key, 0)
+        print(' ... Scan Code =', scancode, ' ... Packets = 4')
+        return scancode
+
+    elif arg1.isupper():
         print('Input =', arg1, end="")
         key = getVK(arg1.lower())
         print(' ... Virtual Key =', key, end="")
@@ -165,5 +173,27 @@ def getVK(arg1):
         '\\': 0xDC,
         ']': 0xDD,
         "'": 0xDE,
-        '`': 0xC0
+        '`': 0xC0,
+
+        ' ': 0x20,  # spacebar
+        '!': 0x31,  # 1
+        '@': 0x32,  # 2
+        '{': 0xDB,  # [
+        '?': 0xBF,  # /
+        ':': 0xBA,  # ;
+        '"': 0xDE,  # '
+        '}': 0xDD,  # ]
+        '#': 0x33,  # 3
+        '$': 0x34,  # 4
+        '%': 0x35,  # 5
+        '^': 0x36,  # 6
+        '&': 0x37,  # 7
+        '*': 0x38,  # 8
+        '(': 0x39,  # 9
+        ')': 0x30,  # 0
+        '_': 0xBD,  # -
+        '=': 0xBB,  # +
+        '~': 0xC0,  # `
+        '<': 0xBC,  # ,
+        '>': 0xBE,  # .
     }.get(arg1)

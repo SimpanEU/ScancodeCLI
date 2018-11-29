@@ -1,10 +1,9 @@
 cd /PrebootManuscriptCLI
 
 Accepted arguments:  
--u \<username>  
--p \<password>  
--t \<default timeout in ms>  
--s \<"string">  
+-u \<username>  -p \<password>  -t \<default timeout in ms>  
+or  
+-s \<"string">  -t \<default timeout in ms>
 
 ### Create manuscript using username and password arguments:
 python -m run -u username -p password -t 32

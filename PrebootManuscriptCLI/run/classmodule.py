@@ -1,5 +1,6 @@
 from .scancodemodule import *
 import struct
+import time
 
 
 class ManuscriptCLI:
@@ -51,6 +52,24 @@ class ManuscriptCLI:
             newfile.write(struct.pack('1H', int(timeoutms)))
             newfile.write(struct.pack('1B', keycode))
 
+        def writeSpecialKey(keycode, timeoutms):
+            # Shift Key Down
+            newfile.write(struct.pack('1B', 0))
+            newfile.write(struct.pack('1H', int(timeoutms)))
+            newfile.write(struct.pack('1B', 42))
+            # Char Key Down
+            newfile.write(struct.pack('1B', 0))
+            newfile.write(struct.pack('1H', int(timeoutms)))
+            newfile.write(struct.pack('1B', keycode))
+            # Char Key Up
+            newfile.write(struct.pack('1B', 1))
+            newfile.write(struct.pack('1H', int(timeoutms)))
+            newfile.write(struct.pack('1B', keycode))
+            # Shift Key Up
+            newfile.write(struct.pack('1B', 1))
+            newfile.write(struct.pack('1H', int(timeoutms)))
+            newfile.write(struct.pack('1B', 42))
+
         def writeHeader(pack):
             newfile.write(struct.pack('I', ManuscriptCLI.version))
             newfile.write(struct.pack('I', pack))
@@ -61,28 +80,62 @@ class ManuscriptCLI:
             newfile.write(struct.pack('1B', 0))
             print('Input = sleep', timeoutms, 'ms ... Packets = 1')
 
+        def writeCtrlAltDelete():
+            # Ctrl Key Down
+            print(win32api.MapVirtualKey(0x12, 0), 'ctrl scan code, vk = ', 0x12)
+            newfile.write(struct.pack('1B', 0))
+            newfile.write(struct.pack('1H', 32))
+            newfile.write(struct.pack('1B', win32api.MapVirtualKey(0x11, 0)))  # ctrl
+            # Alt Key Down
+            newfile.write(struct.pack('1B', 0))
+            newfile.write(struct.pack('1H', 32))
+            newfile.write(struct.pack('1B', win32api.MapVirtualKey(0x12, 0)))  # alt
+            # Delete Key Down
+            newfile.write(struct.pack('1B', 0))
+            newfile.write(struct.pack('1H', 32))
+            newfile.write(struct.pack('1B', win32api.MapVirtualKey(0x2E, 0)))  # delete
+            # Ctrl Key Up
+            newfile.write(struct.pack('1B', 1))
+            newfile.write(struct.pack('1H', 32))
+            newfile.write(struct.pack('1B', win32api.MapVirtualKey(0x11, 0)))
+            # Alt Key Up
+            newfile.write(struct.pack('1B', 1))
+            newfile.write(struct.pack('1H', 32))
+            newfile.write(struct.pack('1B', win32api.MapVirtualKey(0x12, 0)))
+            # Delete Key Up
+            newfile.write(struct.pack('1B', 1))
+            newfile.write(struct.pack('1H', 32))
+            newfile.write(struct.pack('1B', win32api.MapVirtualKey(0x2E, 0)))
 
         # If -u, -p and -t arguments given.
         if arg1 is not None and arg2 is not None and sleep is not None:
             packets = 0
 
             for char in list(arg1):
-                if char.isupper():
+                if not char.isalpha() and not char.isdigit():
                     packets += 4
-                else:
-                    packets += 2
-            for char in list(arg2):
-                if char.isupper():
+                elif char.isupper():
                     packets += 4
                 else:
                     packets += 2
 
+            for char in list(arg2):
+                if not char.isalpha() and not char.isdigit():
+                    packets += 4
+                elif char.isupper():
+                    packets += 4
+                else:
+                    packets += 2
+
+            # tab = 2, enter = 2, enter = 2 == 6
             packets += 6
             writeHeader(packets)
 
             # Username
             for c in list(arg1):
-                if c.isupper():
+                if not c.isalpha() and not c.isdigit():
+                    writeSpecialKey(getKey(c), sleep)
+                elif c.isupper():
                     writeUpper(getKey(c), sleep)
                 else:
                     writeLower(getKey(c), sleep)
@@ -92,7 +145,9 @@ class ManuscriptCLI:
 
             # Password
             for c in list(arg2):
-                if c.isupper():
+                if not c.isalpha() and not c.isdigit():
+                    writeSpecialKey(getKey(c), sleep)
+                elif c.isupper():
                     writeUpper(getKey(c), sleep)
                 else:
                     writeLower(getKey(c), sleep)
@@ -104,7 +159,6 @@ class ManuscriptCLI:
             print('\nTotal packets:', packets)
             print(ManuscriptCLI.binfile, 'has been created!')
 
-
         # If -s and -t arguments given, OR if running with no args.
         if arg1 is not None and arg2 is None and sleep is not None:
             packets = 0
@@ -113,11 +167,15 @@ class ManuscriptCLI:
             for word in stringInput:
                 if '<' and '>' and 'sleep' in word:
                     packets += 1
+                elif '<' and '>' and 'ctrlaltdelete' in word:
+                    packets += 6
                 elif '<' and '>' in word:
                     packets += 2
                 else:
                     for char in list(word):
-                        if char.isupper():
+                        if not char.isalpha() and not char.isdigit():
+                            packets += 4
+                        elif char.isupper():
                             packets += 4
                         else:
                             packets += 2
@@ -127,12 +185,16 @@ class ManuscriptCLI:
                 if '<' and '>' and 'sleep' in word:
                     sleeper = word.replace('<', '').replace('>', '').replace('sleep', '').replace('=', '')
                     writeSleep(sleeper)
+                elif '<' and '>' and 'ctrlaltdelete' in word:
+                    writeCtrlAltDelete()
                 elif '<' and '>' in word:
                     code = word.replace('<', '').replace('>', '')
                     writeSpecial(getKey(code), sleep)
                 else:
                     for char in list(word):
-                        if char.isupper():
+                        if not char.isalpha() and not char.isdigit():
+                            writeSpecialKey(getKey(char), sleep)
+                        elif char.isupper():
                             writeUpper(getKey(char), sleep)
                         else:
                             writeLower(getKey(char), sleep)
