@@ -54,7 +54,7 @@ def run_scancode_bin():
 
 
 def main():
-    create_scancode_bin('UsEr_1', 'PaSS123!!', '320')
+    create_scancode_bin('UsEr_1', 'PaSS123!!', '500')
     run_scancode_bin()
 
 
