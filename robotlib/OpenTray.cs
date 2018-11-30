@@ -1,4 +1,6 @@
-﻿using System;
+﻿// cs example of "def open_cpe_agent():" in python module winAuto.py
+
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
