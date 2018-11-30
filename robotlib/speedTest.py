@@ -84,8 +84,10 @@ def switch_size(argument):
 
 def main():
     # (1GB) file looping (5) times returning mean.
-    write_new_file('1GB', 5)
+    read_disk_size()
+    write_new_file(1, 10)
 
 
 if __name__ == "__main__":
     main()
+

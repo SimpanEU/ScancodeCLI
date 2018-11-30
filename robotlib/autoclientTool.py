@@ -2,11 +2,15 @@ import subprocess
 import os
 from subprocess import PIPE
 
+serverpath = "192.168.56.2"
+serveruser = "admin"
+serverpass = "Password"
+tool = os.environ["SYSTEMDRIVE"] + '\\V4_debug\\AutomationClient.exe'
+
 
 def checkpoint_security_screensaver(arg1):
-    tool = os.environ["SYSTEMDRIVE"] + '\\V4_debug\\AutomationClient.exe'
     script = os.environ["SYSTEMDRIVE"] + '\\V4_debug\\SecurityScreensaver.txt'
-    login = ' -i 192.168.56.2 -u admin -p Password -s '
+    login = ' -i ' + serverpath + ' -u ' + serveruser + ' -p ' + serverpass + ' -s '
 
     cmd = tool + login + '"' + script + '"'
 
@@ -27,9 +31,8 @@ def checkpoint_security_screensaver(arg1):
 
 
 def checkpoint_security_screensaver_text(arg1):
-    tool = os.environ["SYSTEMDRIVE"] + '\\V4_debug\\AutomationClient.exe'
     script = os.environ["SYSTEMDRIVE"] + '\\V4_debug\\SecurityScreensaverText.txt'
-    login = ' -i 192.168.56.2 -u admin -p Password -s '
+    login = ' -i ' + serverpath + ' -u ' + serveruser + ' -p ' + serverpass + ' -s '
 
     cmd = tool + login + '"' + script + '"'
 
@@ -50,8 +53,7 @@ def checkpoint_security_screensaver_text(arg1):
 
 
 def main():
-    checkpoint_security_screensaver("true")
-    #checkpoint_security_screensaver_text("Simpan")
+    checkpoint_security_screensaver_text("true")
 
 
 if __name__ == "__main__":

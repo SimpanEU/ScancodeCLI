@@ -6,20 +6,21 @@ import time
 from struct import unpack
 from subprocess import PIPE
 
+binfile = os.environ["HOMEDRIVE"]+'\\manuscript.bin'
+manuscriptcli = os.environ["HOMEDRIVE"]+'\\DA\\robot\\PrebootManuscriptCLI'
+
 
 def create_scancode_bin(user, passwd, timeout):
     # PrebootManuscriptCLI folder
-    path = 'C:\\DA\\robot\\PrebootManuscriptCLI'
-    os.chdir(path)
+    os.chdir(manuscriptcli)
 
-    if os.getcwd() == path:
+    if os.getcwd() == manuscriptcli:
         cmd = 'python -m run -u ' + user + ' -p ' + passwd + ' -t ' + timeout
         print(cmd)
         subprocess.Popen(cmd, shell=True, stdin=PIPE, stderr=PIPE, stdout=PIPE).communicate()
 
 
 def run_scancode_bin():
-    binfile = 'C:\\manuscript.bin'
     file = open(binfile, 'rb')
 
     version = unpack("4b", file.read(4))
@@ -54,7 +55,7 @@ def run_scancode_bin():
 
 
 def main():
-    create_scancode_bin('UsEr_1', 'PaSS123!!', '500')
+    create_scancode_bin('UsEr_1', 'PaSS123!!', '64')
     run_scancode_bin()
 
 
