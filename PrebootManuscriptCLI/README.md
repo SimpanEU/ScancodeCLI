@@ -1,6 +1,6 @@
 cd /PrebootManuscriptCLI
 
-Accepted arguments:  
+#### Accepted arguments:  
 -u \<username>  -p \<password>  -t \<default timeout in ms>  
 or  
 -s \<"string">  -t \<default timeout in ms>

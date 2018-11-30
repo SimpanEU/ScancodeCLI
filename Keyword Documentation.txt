@@ -210,4 +210,12 @@ Screenshot
   Takes a print screen and saves to home\\test_screenshots.
 
 
-- Write new file  \<1GB>     \<10>  
+------------------
+Write new file  <1GB>     <10>
+
+  Creates a new file with given parameter <size> and loops the creating process <x> number of given times.
+  Calculates the time it takes to create the file, returning the mean time of all loops.
+  One loop contains two tests:
+   Creates a new file and fills it up with same data until given size has been reached.
+   Creates a new file, sets seek to given size minus 1, writes 1 byte, set seek to 0 and fill up the file.
+  Prints the results and mean times of mb/s to robot logs.

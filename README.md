@@ -10,6 +10,7 @@
  
 ##Acceptance Test Keywords:  
 - Read FDE DLog  \<TextStr>  <5>  
+- Read FDE DLog Crashes  
 - Preboot Bypass Logon  \<false>  
 - SSO Chain Logon  \<true>  
 - Start Notepad  
@@ -36,7 +37,6 @@
 - Run Scancode Bin  
 - Read Disk Size  
 - Create CrashDump  
-- Read FDE DLog Crashes  
 - Read Release Build  
 - Check If Win Activated  
 - Open CPE Agent  
