@@ -83,7 +83,7 @@ def background_scanner():
         if killme:
             break
 
-        time.sleep(0.5)
+        time.sleep(1)
 
 
 def start_background_scan():

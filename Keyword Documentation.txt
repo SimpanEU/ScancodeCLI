@@ -1,0 +1,213 @@
+Externals Libs:
+
+robotframework     https://pypi.org/project/robotframework/
+pillow             https://pypi.org/project/Pillow/
+psutil             https://pypi.org/project/psutil/
+
+
+
+Settings Keywords:
+------------------
+Suite Setup  Start Background Scan  
+Suite Teardown    Stop Background Scan 
+
+  Checks every second for new crashdump files inside FDE folder and for crashdump reports inside dlog.txt
+  Prints in robot log and creates an more detailed log in SYSTEMDRIVE\\FDE_robot_dmplog.txt if crashdumps found.
+
+
+
+Acceptance Test Keywords: 
+------------------
+Read FDE DLog  <TextStr>  <5>  
+
+  Searches dlog for any line containing given <parameter> for the last <x> minutes  
+  Returns a print in log if found.
+
+
+------------------
+Read FDE DLog Crashes
+
+  Searches dlog for any line about crashdump reports.
+  Accepts a minute parameter if not want to read whole dlog.
+
+
+------------------
+Preboot Bypass Logon  <false>  
+
+  Asserts last login into windows is done with preboot bypass <true> or <false>.
+  Reads epslog.43.1.log for "Windows Integrated Logon" line.
+
+
+------------------
+SSO Chain Logon  <true>  
+
+  Asserts last login into windows is done with SSO, <true> or <false>.
+  Reads dlog and checks that timestamps for "SSO data initialized", "OneCheck Repository unlocked", and
+  "Credential type: autologon" is all found within 2 secs of eachother.
+
+
+------------------
+Start Notepad  
+
+  Runs notepad.exe
+
+
+------------------
+Verify Notepad Running  
+
+  Looks for notepad.exe in list of running processes.
+
+
+------------------
+Verify CPE Agent Running  
+  
+  Looks for cpda.exe in list of running processes.
+
+
+------------------
+Start CPInfo  
+
+  Runs cpinfo with normal collect mode.
+
+
+------------------
+Verify CPInfo files  
+
+  Verify preboot.cab, dlog1.txt, FDE_dlog.txt and dlogs is collected from cpinfo and found within cpinfo archive.
+
+
+------------------
+Create Wakeup XML  
+
+  Creates a XML template for task scheduler. Runs an empty bat every minute the next 30 minutes.
+
+
+------------------
+Schedule Wakeup Task  <User>   <Passwd>  
+
+  Schedules the previous created XML template in windows task scheduler. Requires current windows user and password to activate.
+
+
+------------------
+Change OS user password  <User>   <Passwd>  
+
+  Change the windows password of current user, using net user in cmd. Requires current user and password.
+
+
+------------------
+Read Client Status  <70>  
+
+  Reads clientStatus key in registry and asserts given value is found.
+  If 70 found, means encryption finished. If given value is not matching with regkey, keeps looking for 20 minutes before failing case.
+
+
+------------------
+Read Encryption State  <2>    <AES-CBC>  
+
+  Reads encryption state in registry, first parameter is number of disks and second parameter is encryption cipher.
+  Asserts there are <2> disks encrypted with <AES-CBC>
+
+
+------------------
+Read wol status  <false>
+
+  Reads wol key in registry and asserts its <true> or <false>
+
+
+------------------
+Read wil status  <false>  
+
+  Reads wil key in registry and asserts its <true> or <false>
+
+
+
+------------------
+Read EPS Screensaver Text   <Simpan>  
+
+  Reads EPS Screensaver Text in registry, asserts is the same value as given parameter.
+
+
+
+------------------
+Read Win 3D Screensaver Text    <Simpan>  
+
+  Reads WINDOWS 3d Screensaver Text in registry, asserts is the same value as given parameter.
+
+
+
+------------------
+Hibernate  
+
+  Hibernates the system from cmd shutdown.
+
+
+
+------------------
+Reboot 
+
+   Reboots the system using cmd shutdown.
+
+
+
+------------------
+CheckPoint Security Screensaver     <false>  
+
+  Changes the CP Security Screensaver Policy using the AutomationClient.exe tool. (Does not INSTALL policies)
+
+
+------------------
+CheckPoint Security Screensaver Text    <Simpan> 
+
+  Changes the CP Security Screensaver Policy text using the AutomationClient.exe tool. (Does not INSTALL policies) 
+
+
+------------------
+Create Scancode Bin  <User>  <Password>  <32>  
+
+  Creates a binary with scancodes for a normal loginscenario in preboot, 
+  Last argument is the default timeout in ms between each key press.
+
+
+------------------
+Run Scancode Bin  
+
+  Runs the previous created binary and simulates key presses in windows. (For testing purpose)
+
+
+------------------
+Read Disk Size  
+
+  Returns a print with available diskspace.
+
+
+------------------
+Create CrashDump  
+
+  Creates a CrashDump. (For testing purpose)
+
+
+------------------
+Read Release Build  
+
+  Prints the release and build to robot log.
+
+
+------------------
+Check If Win Activated  
+
+  Prints information about windows activation status in robot log.
+
+
+------------------
+Open CPE Agent  
+ 
+  Open CPE Agent from tray bar (Must have been opened atleast once before, in order to find window handle)
+
+
+------------------
+Screenshot  
+
+  Takes a print screen and saves to home\\test_screenshots.
+
+
+- Write new file  \<1GB>     \<10>  

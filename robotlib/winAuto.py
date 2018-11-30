@@ -5,6 +5,10 @@ import datetime
 import win32gui
 import win32con
 
+
+
+
+### Requires package pywinauto (clicks on FDE if cptrayUI is open)
 #from pywinauto import Application
 # def check_fde_status():
 #     cptrayUI = os.environ["ProgramFiles(x86)"] + "\\CheckPoint\\Endpoint Security\\UIFramework\\bin\\cptrayUI.exe"
@@ -21,6 +25,8 @@ import win32con
 
 
 def open_cpe_agent():
+    # TODO: This only works if cptrayUI has been opened atleast once. Else, window handle cant be found.
+
     def get_handle(name):
         def check(hwnd, param):
             title = win32gui.GetWindowText(hwnd)
