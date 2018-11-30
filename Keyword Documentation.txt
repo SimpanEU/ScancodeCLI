@@ -122,14 +122,14 @@ Read wil status  <false>
 
 
 ------------------
-Read EPS Screensaver Text   <Simpan>  
+Read EPS Screensaver Text   <TestText>
 
   Reads EPS Screensaver Text in registry, asserts is the same value as given parameter.
 
 
 
 ------------------
-Read Win 3D Screensaver Text    <Simpan>  
+Read Win 3D Screensaver Text    <TestText>
 
   Reads WINDOWS 3d Screensaver Text in registry, asserts is the same value as given parameter.
 
@@ -156,7 +156,7 @@ CheckPoint Security Screensaver     <false>
 
 
 ------------------
-CheckPoint Security Screensaver Text    <Simpan> 
+CheckPoint Security Screensaver Text    <TestText>
 
   Changes the CP Security Screensaver Policy text using the AutomationClient.exe tool. (Does not INSTALL policies) 
 

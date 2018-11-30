@@ -25,12 +25,12 @@
 - Read Encryption State  \<2>    \<AES-CBC>  
 - Read wol status  \<false>
 - Read wil status  \<false>  
-- Read EPS Screensaver Text   \<Simpan>  
-- Read Win 3D Screensaver Text    \<Simpan>  
+- Read EPS Screensaver Text   \<TestText>  
+- Read Win 3D Screensaver Text    \<TestText>  
 - Hibernate  
 - Reboot  
 - CheckPoint Security Screensaver     \<false>  
-- CheckPoint Security Screensaver Text    \<Simpan>  
+- CheckPoint Security Screensaver Text    \<TestText>  
 
 ##Other keywords:  
 - Create Scancode Bin  \<User>  \<Password>  \<32>  

@@ -42,8 +42,8 @@ Read Registry Values
     Read Encryption State  2    AES-CBC
     Read wol status  false
     Read wil status  false
-    Read EPS Screensaver Text   Simpan
-    Read Win 3D Screensaver Text    Simpan
+    Read EPS Screensaver Text   TestText
+    Read Win 3D Screensaver Text    TestText
 
 Preboot Manuscript Login Scenario
     Create Scancode Bin  User  Password  32
@@ -51,7 +51,7 @@ Preboot Manuscript Login Scenario
 
 Endpoint Server Settings AutomationClient.exe
     CheckPoint Security Screensaver     false
-    CheckPoint Security Screensaver Text    Simpan
+    CheckPoint Security Screensaver Text    TestText
 
 FDE Speed Test
     Write new file  1GB     10
