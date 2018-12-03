@@ -1,3 +1,7 @@
+Converts given characters to virtual keycodes and then to scan codes and saves in binary format.
+
+
+
 cd /scancodeCLI
 
 #### Accepted arguments:  
