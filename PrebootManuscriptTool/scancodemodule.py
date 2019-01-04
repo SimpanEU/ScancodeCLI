@@ -1,33 +1,24 @@
 import win32api
 
 
-def getKey(arg1):
-    if not arg1.isalpha() and not arg1.isdigit():
-        print('Input =', arg1, end="")
-        key = getVK(arg1)
-        print(' ... Virtual Key =', key, end="")
-        scancode = win32api.MapVirtualKey(key, 0)
-        print(' ... Scan Code =', scancode, ' ... Packets = 4')
-        return scancode
+def getSC(userinput):
+    if userinput.isupper():
+        # Convert input to Virtual Key
+        key = getVK(userinput.lower())
 
-    elif arg1.isupper():
-        print('Input =', arg1, end="")
-        key = getVK(arg1.lower())
-        print(' ... Virtual Key =', key, end="")
+        # Convert Virtual Key to Scan Code
         scancode = win32api.MapVirtualKey(key, 0)
-        print(' ... Scan Code =', scancode, ' ... Packets = 4')
         return scancode
 
     else:
-        print('Input =', arg1, end="")
-        key = getVK(arg1)
-        print(' ... Virtual Key =', key, end="")
+        key = getVK(userinput)
         scancode = win32api.MapVirtualKey(key, 0)
-        print(' ... Scan Code =', scancode, ' ... Packets = 2')
         return scancode
 
 
 def getVK(arg1):
+    # Microsofts Virtual Key Dictionary
+
     return {
         'backspace': 0x08,
         'tab': 0x09,
@@ -174,7 +165,6 @@ def getVK(arg1):
         ']': 0xDD,
         "'": 0xDE,
         '`': 0xC0,
-
         ' ': 0x20,  # spacebar
         '!': 0x31,  # 1
         '@': 0x32,  # 2
