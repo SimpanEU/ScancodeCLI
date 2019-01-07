@@ -36,7 +36,7 @@ class ManuscriptClass:
             # -p <Password>
             for c in list(arg2):
                 if not c.isalpha() and not c.isdigit():
-                    # TODO:
+                    # TODO: Handling non-alpha/non-digit characters
                     # If user input needs shift usage to reproduce, like !"#¤
                     # writeSpecialKey() function is being used as seen below
                     # If user input does not need shift to reproduce, like ,.'¨
