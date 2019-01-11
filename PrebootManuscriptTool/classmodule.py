@@ -20,7 +20,7 @@ class ManuscriptClass:
         # -u -p -t arguments given.
         if arg1 is not None and arg2 is not None and sleep is not None:
             packets = calculatePackets(arg1, arg2)
-            writeHeader(file, packets, ver)
+            writeHeader(file, ver, packets)
 
             # -u <Username>
             for c in list(arg1):
@@ -58,7 +58,7 @@ class ManuscriptClass:
         # -s -t arguments given OR if running with no args.
         if arg1 is not None and arg2 is None and sleep is not None:
             packets = calculatePackets(arg1)
-            writeHeader(file, packets, ver)
+            writeHeader(file, ver, packets)
 
             stringInput = arg1.replace('<', ' <').replace('>', '> ').split()
             for word in stringInput:
