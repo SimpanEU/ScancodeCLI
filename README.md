@@ -1,5 +1,7 @@
 main.py
 
+Dependencies:
+pywin32
 
 #### Accepted argument combinations:  
 -u \<username>  -p \<password>  -t \<default timeout in ms>  
