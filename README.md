@@ -1,7 +1,9 @@
 main.py
 
-Dependencies:
+Dependencies:  
 pywin32
+
+Manuscript saved to binfile variable path in classmodule.py
 
 #### Accepted argument combinations:  
 -u \<username>  -p \<password>  -t \<default timeout in ms>  
