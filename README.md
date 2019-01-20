@@ -1,4 +1,4 @@
-python main.py
+main.py
 
 
 #### Accepted argument combinations:  
